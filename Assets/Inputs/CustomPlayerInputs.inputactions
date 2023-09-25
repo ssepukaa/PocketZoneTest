@@ -1,5 +1,5 @@
 {
-    "name": "PlayerInputs",
+    "name": "CustomPlayerInputs",
     "maps": [
         {
             "name": "Gameplay",
@@ -7,8 +7,17 @@
             "actions": [
                 {
                     "name": "Movement",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "07fdb80e-4b2b-4344-a3eb-067b39b5b924",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "852d2276-cd2b-4a4b-9818-62223b4202ff",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -18,8 +27,8 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "1d2876b1-0d61-4d1e-b2e4-51f7d5f39c99",
-                    "path": "<Joystick>/stick/up",
+                    "id": "414c8049-1ee3-41d0-9cd9-bcaf4e356277",
+                    "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -28,35 +37,68 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "72348770-ca21-4130-9a5d-ef847d3ea5de",
-                    "path": "<Joystick>/stick/down",
+                    "name": "WASD",
+                    "id": "b7e9d1f6-0953-4d1b-97fa-9b1f5781adef",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "61ff7952-a8ce-41c0-8d25-5375bc3a83f5",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Movement",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "d2db6bf8-d021-483d-afbb-85165887fa6d",
-                    "path": "<Joystick>/stick/right",
+                    "name": "down",
+                    "id": "3d2d679c-e032-4510-9035-61f7a1223783",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Movement",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "1ef191f9-27b9-4697-a53a-d56f050afd90",
-                    "path": "<Joystick>/stick/left",
+                    "name": "left",
+                    "id": "d5abe0a1-b99c-4ea4-9317-778ca515cae7",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "9c092f01-0845-4243-bc72-bb125a0875f6",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "d40027d0-401f-419c-87f4-5d32aa80697c",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
