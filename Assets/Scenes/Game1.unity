@@ -670,6 +670,7 @@ GameObject:
   - component: {fileID: 712172495}
   - component: {fileID: 712172496}
   - component: {fileID: 712172497}
+  - component: {fileID: 712172498}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -775,6 +776,36 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0031389596, y: -0.0015715963}
   m_Size: {x: 0.7232576, y: 0.5440044}
   m_Direction: 1
+--- !u!114 &712172498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712172491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1beea932f4e338f44a30bba7d553e6ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AddItem:
+    m_Name: Add Item
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 46fc44a7-a758-4e47-9a88-de6c9cddf970
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  RemoveItem:
+    m_Name: Remove Item
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b3c7db43-07a3-491d-9deb-30f5ba17da00
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!1 &729837946
 GameObject:
   m_ObjectHideFlags: 0

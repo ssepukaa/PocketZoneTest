@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefGame: {fileID: 1668003163385612974, guid: 915b5940b8822d24993120c52d4f08c4, type: 3}
+  prefUI: {fileID: 7633827031291260238, guid: 9856734a6de280e418bd0d880e7b770a, type: 3}

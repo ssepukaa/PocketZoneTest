@@ -8,7 +8,7 @@ namespace Assets.Scripts.Infra.Boot {
     public class Bootstrapper : MonoBehaviour, IBootstrapper {
        private IGameController _gameController;
        private IUIController _uiController;
-       
+       private GameStateTypes _gameState;
        [SerializeField]private GameObject prefGame;
        [SerializeField]private GameObject prefUI;
 
@@ -80,8 +80,10 @@ namespace Assets.Scripts.Infra.Boot {
                 // Здесь можно добавить индикатор загрузки, если нужно
                 yield return null;
             }
-            _gameController.LoadMenuComplete();
-            _uiController.LoadMenuComplete();
+
+            _gameState = GameStateTypes.Menu;
+            _gameController.LoadSceneComplete(_gameState);
+            _uiController.LoadSceneComplete(_gameState);
             // Вызов события после загрузки сцены
         }
     }

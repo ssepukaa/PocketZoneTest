@@ -3,10 +3,9 @@ using Assets.Scripts.UI;
 
 namespace Assets.Scripts.Infra.Game {
     public interface IGameController {
-        public void Construct(Bootstrapper bootstrap, IUIController uiController) {
+        public void Construct(Bootstrapper bootstrap, IUIController uiController);
 
-        }
-
-        void LoadMenuComplete();
+        void LoadSceneComplete(GameStateTypes gameState);
+        void PlayButtonInSceneMenu();
     }
 }
