@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game.Data;
 using Assets.Scripts.Player;
@@ -7,7 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Infra.Game {
-
+    public enum SceneNames { Boot, Menu, Game1, Game2, }
 
     public class GameController : MonoBehaviour, IGameController {
         
@@ -20,11 +21,11 @@ namespace Assets.Scripts.Infra.Game {
         }
 
         public void Construct(Bootstrapper bootstrapper, IUIController uiController) {
-            _rd._bootstrapper = bootstrapper;
-            _rd._ui = uiController;
-            _rd._mode = new GameMode(this);
-            _rd._state = new GameState(this);
-            _rd._bootstrapper.InitGameComplete();
+            _rd.Bootstrapper = bootstrapper;
+            _rd.IUIController = uiController;
+            _rd.GameMode = new GameMode(this);
+            _rd.GameState = new GameState(this);
+            _rd.Bootstrapper.InitGameComplete();
 
         }
         private IEnumerator LoadSceneCoroutine(string sceneName, GameStateTypes gameState) {
@@ -35,27 +36,40 @@ namespace Assets.Scripts.Infra.Game {
             }
             // Вызов события после загрузки сцены
             LoadSceneComplete(gameState);
-            _rd._ui.LoadSceneComplete(gameState);
+            _rd.IUIController.LoadSceneComplete(gameState);
 
         }
         public void LoadSceneComplete(GameStateTypes gameState) {
-            _rd._state.SetState(gameState);
-            
-            
+            _rd.GameState.SetState(gameState);
+            SceneNames sceneNameEnum = (SceneNames)Enum.Parse(typeof(SceneNames), SceneManager.GetActiveScene().name);
+            switch (sceneNameEnum) {
+                case SceneNames.Boot:
+                    break;
+                case SceneNames.Menu:
+                    break;
+                case SceneNames.Game1:
+                    _rd.PlayerController = FindObjectOfType<PlayerController>();
+                    _rd.PlayerController.Construct(this, _rd.IUIController);
+                    break;
+                case SceneNames.Game2:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+
         }
-
-
-
+        
         void Update() {
 
         }
 
-      //  #region SceneMenu
+        #region MenuScene
         public void PlayButtonInSceneMenu() {
-            StartCoroutine(LoadSceneCoroutine("Game1", GameStateTypes.Game));
+            StartCoroutine(LoadSceneCoroutine(SceneNames.Game1.ToString(), GameStateTypes.Game));
         }
 
 
-       // #endregion
+       #endregion
     }
 }

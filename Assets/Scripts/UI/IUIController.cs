@@ -6,5 +6,6 @@ namespace Assets.Scripts.UI {
         public void Construct(Bootstrapper bootstrapper, IGameController gameController);
         void LoadSceneComplete(GameStateTypes gameState);
         void PlayButtonInSceneMenu();
+        public void ShowWindow(UIWindowsType windowType);
     }
 }

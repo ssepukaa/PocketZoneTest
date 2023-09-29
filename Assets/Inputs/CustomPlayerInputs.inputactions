@@ -24,18 +24,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "AddItem",
+                    "name": "Inventory",
                     "type": "Button",
-                    "id": "f43db1d1-4b2f-40f8-b9e6-3e6e349ac9ea",
+                    "id": "58026080-b97b-416f-bef8-dedff79f7570",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RemoveItem",
+                    "name": "MouseClick",
                     "type": "Button",
-                    "id": "02e7c5b3-dde5-4f90-b617-ac7ed137a168",
+                    "id": "69edad7e-02a8-4ef6-81db-05a143032663",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -122,23 +122,23 @@
                 },
                 {
                     "name": "",
-                    "id": "438f7657-bb82-4b1e-906b-860c5b65a13d",
-                    "path": "<Keyboard>/t",
+                    "id": "e35518eb-6471-462b-956e-9aad43786a08",
+                    "path": "<Keyboard>/o",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AddItem",
+                    "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "11c554e9-93ba-4b6d-ac3b-f9b40b463523",
-                    "path": "<Keyboard>/y",
-                    "interactions": "",
+                    "id": "36250259-7415-48fa-8f74-515a519a7955",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "MultiTap",
                     "processors": "",
                     "groups": "",
-                    "action": "RemoveItem",
+                    "action": "MouseClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

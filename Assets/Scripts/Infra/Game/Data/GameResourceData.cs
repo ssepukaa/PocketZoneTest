@@ -6,10 +6,10 @@ using UnityEngine;
 namespace Assets.Scripts.Infra.Game.Data {
     [CreateAssetMenu(fileName = "GameResourceData", menuName = "PocketZoneTest/GameResourceData")]
     public class GameResourceData : ScriptableObject {
-        public Bootstrapper _bootstrapper;
-        public IUIController _ui;
-        public IPlayerController _player;
-        public GameMode _mode;
-        public GameState _state;
+        public Bootstrapper Bootstrapper;
+        public IUIController IUIController;
+        public IPlayerController PlayerController;
+        public GameMode GameMode;
+        public GameState GameState;
     }
 }
