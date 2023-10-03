@@ -2,6 +2,8 @@
 using System.Collections;
 using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game;
+using Assets.Scripts.InventoryObject;
+using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.UI.Base;
 using Assets.Scripts.UI.Data;
 using UnityEngine;
@@ -14,8 +16,9 @@ namespace Assets.Scripts.UI {
         
         private UIBaseWindows[] _uiWindows;
         private UIBasePopups[] _uiPopups;
-        [SerializeField] private UIModelData _md;
-        [SerializeField] private UIResourceData _rd;
+        public UIModelData _md;
+        public UIResourceData _rd;
+        
 
 
 
@@ -24,33 +27,22 @@ namespace Assets.Scripts.UI {
         }
 
 
-
-        public void ShowWindow(UIWindowsType windowType) {
-            foreach (var window in _uiWindows) {
-                window.gameObject.SetActive(false);
-            }
-            foreach (var window in _uiWindows) {
-                if (window.idUIWindowsType == windowType) {
-                    window.gameObject.SetActive(true);
-                }
-            }
-        }
-
-        public void ShowPopup(UIPopupType popupType) {
-            
-            foreach (var popup in _uiPopups) {
-                if (popup.idUIPopupType == popupType) {
-                    if(popupType == UIPopupType.None) return;
-                    popup.gameObject.gameObject.SetActive(true);
-                }
-            }
-        }
-
         public void Construct(Bootstrapper bootstrapper, IGameController gameController) {
             _rd._bootstrapper = bootstrapper;
             _rd._gameController = gameController;
             _rd._bootstrapper.InitUIComplete();
         }
+
+        public void SetInventory(IInventory inventory) {
+            _rd.Inventory = inventory;
+        }
+
+       
+
+        public IInventory GetInventory() {
+            return _rd.Inventory;
+        }
+
 
         public void LoadSceneComplete(GameStateTypes gameState) {
             _uiWindows = FindObjectsOfType<UIBaseWindows>();
@@ -80,6 +72,27 @@ namespace Assets.Scripts.UI {
             }
             
 
+        }
+
+        public void ShowWindow(UIWindowsType windowType) {
+            foreach (var window in _uiWindows) {
+                window.gameObject.SetActive(false);
+            }
+            foreach (var window in _uiWindows) {
+                if (window.idUIWindowsType == windowType) {
+                    window.gameObject.SetActive(true);
+                }
+            }
+        }
+
+        public void ShowPopup(UIPopupType popupType) {
+            
+            foreach (var popup in _uiPopups) {
+                if (popup.idUIPopupType == popupType) {
+                    if(popupType == UIPopupType.None) return;
+                    popup.gameObject.gameObject.SetActive(true);
+                }
+            }
         }
 
         #region MenuScene

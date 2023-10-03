@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Infra.Boot;
+using Assets.Scripts.Infra.Game.Data;
 using Assets.Scripts.UI;
 
 namespace Assets.Scripts.Infra.Game {
@@ -7,5 +8,6 @@ namespace Assets.Scripts.Infra.Game {
 
         void LoadSceneComplete(GameStateTypes gameState);
         void PlayButtonInSceneMenu();
+        IGameResourceData RD { get; }
     }
 }

@@ -7,9 +7,11 @@ namespace Assets.Scripts.Player {
         private Vector2 _movement;
         private Rigidbody2D _rb;
         private PlayerController _player;
+        private PlayerInput _input;
 
         private void Awake() {
             _rb = GetComponent<Rigidbody2D>();
+            _input = GetComponent<PlayerInput>();
         }
 
         public void Construct(PlayerController player) {

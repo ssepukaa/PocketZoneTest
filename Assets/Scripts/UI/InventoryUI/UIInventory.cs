@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.InventoryObject;
+using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Data;
 using Assets.Scripts.InventoryObject.Items;
 using Assets.Scripts.Player;
+using Assets.Scripts.UI.GameScene.Windows;
 using UnityEngine;
 
 namespace Assets.Scripts.UI.InventoryUI {
@@ -11,130 +13,93 @@ namespace Assets.Scripts.UI.InventoryUI {
         private PlayerController _player;
         public GameObject slotPrefab; // Drag and drop your SlotPrefab here in the inspector
         public RectTransform slotsContainer; // Parent object for all slots
+        private UIInventoryWindow _inventoryWindow;
 
-        [SerializeField] private InventoryItemInfo _appleInfo;
-        [SerializeField] private InventoryItemInfo _pepperInfo;
-        private Apple item1;
-        private Pepper item2;
-        private Apple item3;
-        private Pepper item4;
+        [SerializeField] private ItemsInfoDataBase _itemsInfoDataBase;
+        private IInventoryItem item1;
+        private IInventoryItem item2;
+        private IInventoryItem item3;
+        private IInventoryItem item4;
 
 
-        private Inventory _inventory;
-        public List<UIInventorySlot> _uiSlots = new List<UIInventorySlot>();
+       // private Inventory _inventory;
+      
+        public UIInventorySlot[] _uiSlots;
         //public event Action<int> OnSlotSelected; // Событие, которое вызывается при выборе слота
         private void OnEnable() {
           
         }
         
-        private void OnDisable() {
-            _inventory.OnInventoryStateChangedEvent -= OnInventoryChanged;
+        private void OnDestroy() {
+            _player.rd.Inventory.OnInventoryStateChangedEvent -= OnInventoryChanged;
+           
         }
 
 
         public void Construct(PlayerController playerController) {
-            _inventory = playerController.GetInventory();
-            InitializeSlots();
+            _player = playerController;
+            _itemsInfoDataBase = _player.rd.inventoryInfosData;
+            _inventoryWindow = GetComponentInChildren<UIInventoryWindow>();
             SetItems();
+            
+            AddItems();
+            InitializeSlots();
             UpdateUI();
-            _inventory.OnInventoryStateChangedEvent += OnInventoryChanged;
+            
+            _player.rd.Inventory.OnInventoryStateChangedEvent += OnInventoryChanged;
+           
         }
 
         private void SetItems() {
-            item1 = new Apple(_appleInfo);
-            item1.SetAmount(3);
-            item3 = new Apple(_appleInfo);
-            item3.SetAmount(3);
-            item2 = new Pepper(_pepperInfo);
-            item2.SetAmount(2);
-            item4 = new Pepper(_pepperInfo);
-            item4.SetAmount(2);
-            _inventory.TryAddToSlot(this,_inventory.GetSlotByIndex(0), item1);
-            _inventory.TryAddToSlot(this, _inventory.GetSlotByIndex(1), item2);
-            _inventory.TryAddToSlot(this, _inventory.GetSlotByIndex(2), item3);
-            _inventory.TryAddToSlot(this, _inventory.GetSlotByIndex(3), item4);
-        }
-
-        private void InitializeSlots() {
-            for (int i = 0; i < _inventory.Capacity; i++) {
-                GameObject slotGO = Instantiate(slotPrefab, slotsContainer);
-                UIInventorySlot uiSlot = slotGO.GetComponent<UIInventorySlot>();
-               _uiSlots.Add(uiSlot);
-               uiSlot.Construct(this, i);
-            }
+            item1 = new InventoryItem(_itemsInfoDataBase.AmmoInfo);
+            item1.Amount=3;
+            item3 = new InventoryItem(_itemsInfoDataBase.AmmoInfo);
+            item3.Amount = 3;
+            item2 = new InventoryItem(_itemsInfoDataBase.RifleInfo);
+            item2.Amount = 2;
+            item4 = new InventoryItem(_itemsInfoDataBase.RifleInfo);
+            item4.Amount = 2;
             
         }
 
-        public Inventory GetInventory() {
-            return _inventory;
+        private void InitializeSlots() {
+            _uiSlots = new UIInventorySlot[_player.rd.CapacityInventory];
+            for (int i = 0; i < _player.rd.CapacityInventory; i++) {
+                GameObject slotGO = Instantiate(slotPrefab, slotsContainer);
+                UIInventorySlot uiSlot = slotGO.GetComponent<UIInventorySlot>();
+                _uiSlots[i] = uiSlot;
+                _uiSlots[i].Construct(this, _player.rd.Inventory.GetSlotByIndex(i), i);
+                Debug.Log($"_player.rd.Inventory.GetSlotByIndex(i).IsEmpty ====={_player.rd.Inventory.GetSlotByIndex(i).IsEmpty} and number of slot = {i}");
+            }
+
+
+            
         }
+
+        private void AddItems() {
+            Debug.Log($"UIInventory:   _player.rd.Inventory == null {_player.rd.Inventory == null}");
+
+            _player.rd.Inventory.TryAddToSlot(this, _player.rd.Inventory.GetSlotByIndex(0), item1);
+            _player.rd.Inventory.TryAddToSlot(this, _player.rd.Inventory.GetSlotByIndex(1), item2);
+            _player.rd.Inventory.TryAddToSlot(this, _player.rd.Inventory.GetSlotByIndex(2), item3);
+            _player.rd.Inventory.TryAddToSlot(this, _player.rd.Inventory.GetSlotByIndex(3), item4);
+        }
+
         public void UpdateUI() {
             foreach (var uiSlot in _uiSlots) {
                 uiSlot.Refresh();
             }
         }
+
         private void OnInventoryChanged(object sender) {
             UpdateUI();
         }
-
-
-        public void OnSlotButton(int slotIndex) {
-            _inventory.ButtonSlotSelected(slotIndex);
+        
+        public void OnSlotButton(IInventorySlot slot) {
+            _player.rd.Inventory.ButtonSlotSelected(slot);
+            
+            _inventoryWindow.UpdateUI(_player.rd.Inventory.GetSelectedSlot());
         }
 
     }
 }
-
-
-// public class UIInventory : MonoBehaviour {
-//
-//     private PlayerController _player;
-//     [SerializeField] private InventoryItemInfo _appleInfo;
-//     [SerializeField] private InventoryItemInfo _pepperInfo;
-//     private Apple item1;
-//     private Pepper item2;
-//     public InventoryObject.Inventory _inventory;
-//     public UIInventorySlot[] uiSlots;
-//     private InventorySlot[] _inventorySlots;
-//
-//
-//     public void Construct(PlayerController playerController) {
-//
-//
-//         _player = playerController;
-//         _inventory = _player.GetInventory();
-//         _inventory.OnInventoryStateChangedEvent += OnInventoryChanged;
-//         _inventorySlots = _inventory.GetAllSlots();
-//         item1 = new Apple(_appleInfo);
-//         item1.SetAmount(3);
-//         item2 = new Pepper(_pepperInfo);
-//         item2.SetAmount(2);
-//         uiSlots = GetComponentsInChildren<UIInventorySlot>();
-//         var first = _inventorySlots[1];
-//         var second = _inventorySlots[2];
-//         var third = _inventorySlots[3];
-//         var fourth = _inventorySlots[4];
-//
-//         _inventory.TryAddToSlot(this, first, item1);
-//         _inventory.TryAddToSlot(this, second, item1);
-//
-//         _inventory.TryAddToSlot(this, third, item2);
-//         _inventory.TryAddToSlot(this, fourth, item2);
-//         // Инициализация UI слотов
-//         foreach (var uiSlot in uiSlots) {
-//             var correspondingInventorySlot = _inventory.GetSlotByIndex(Array.IndexOf(uiSlots, uiSlot));
-//             uiSlot.Initialize(correspondingInventorySlot);
-//         }
-//     }
-//     private void OnInventoryChanged(object sender) {
-//         foreach (var uiSlot in uiSlots) {
-//             uiSlot.Refresh();
-//         }
-//
-//     }
-//
-//     private void OnDestroy() {
-//         _inventory.OnInventoryStateChangedEvent -= OnInventoryChanged;
-//     }
-//
-// }

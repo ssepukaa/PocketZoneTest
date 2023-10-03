@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.InventoryObject.Abstract {
     public interface IInventoryItemState {
-        int amount { get; set; }
-        bool isEquipped { get; set; }
+        int Amount { get; set; }
+        bool IsEquipped { get; set; }
     }
 }

@@ -8,5 +8,11 @@ namespace Assets.Scripts.UI.GameScene.Windows {
         private void Awake() {
             idUIWindowsType = UIWindowsType.HUD;
         }
+
+        public void OnOpenInventoryButton() {
+            _controller.ShowWindow(UIWindowsType.Inventory);
+        }
+
+       
     }
 }

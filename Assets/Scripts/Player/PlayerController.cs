@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Infra.Game;
 using Assets.Scripts.InventoryObject;
+using Assets.Scripts.InventoryObject.Abstract;
+using Assets.Scripts.Player.Abstract;
 using Assets.Scripts.Player.Data;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.InventoryUI;
@@ -15,17 +17,23 @@ namespace Assets.Scripts.Player {
         public void Construct(IGameController gameController, IUIController uiController) {
             rd.GameController = gameController;
             rd.UIController = uiController;
-            rd.inventory = new Inventory(16);
-            rd.UIInventory = FindObjectOfType<UIInventory>();
-            rd.UIInventory.Construct(this);
-            rd.inventory.UIInventory =  rd.UIInventory;
+            rd.PlayerInput = GetComponent<PlayerInputComp>();
+            rd.Inventory = new Inventory(rd.CapacityInventory);
             rd.PlayerInput = GetComponent<PlayerInputComp>();
             rd.PlayerInput.Construct(this);
+            rd.UIController.SetInventory(rd.Inventory);
+            rd.UIInventory = FindObjectOfType<UIInventory>();
+            rd.UIInventory.Construct(this);
+            rd.PlayerLootTrigger = GetComponentInChildren<PlayerLootTrigger>();
+            rd.PlayerLootTrigger.Construct(this);
+
         }
 
-        public Inventory GetInventory() {
-            return rd.inventory;
+        public bool CollectLoot(object sender, IInventoryItem item) {
+            rd.Inventory.TryToAdd(sender, item);
+            return true;
         }
+
 
         public void OpenInventory() {
            rd.UIController.ShowWindow(UIWindowsType.Inventory);

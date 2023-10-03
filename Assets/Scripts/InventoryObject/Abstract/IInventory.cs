@@ -1,16 +1,24 @@
 ﻿using System;
+using Assets.Scripts.InventoryObject.Data;
 
 namespace Assets.Scripts.InventoryObject.Abstract {
     public interface IInventory {
-        int capacity { get; set; }
-        bool isFull { get; }
-        IInventoryItem GetItem(Type itemType);
+        int Capacity { get; set; }
+        bool IsFull { get; }
+        public IInventorySlot GetSlotByIndex(int index);
+        public IInventorySlot GetSelectedSlot();
+        IInventoryItem GetItem(InventoryItemType itemType);
         IInventoryItem[] GetAllItems();
-        IInventoryItem[] GetAllTypes(Type itemType);
+        IInventoryItem[] GetAllTypes(InventoryItemType itemType);
         IInventoryItem[] GetEquippedItems();
-        int GetItemAmount(Type itemType);
+
+        //int GetItemAmount(Type itemType);
         bool TryToAdd(object sender, IInventoryItem item);
-        void Remove(object sender, Type itemType, int amount = 1);
-        bool HasItem(Type itemType, out IInventoryItem item);
+        bool TryAddToSlot(object sender, IInventorySlot slot, IInventoryItem item);
+        public void ButtonSlotSelected(IInventorySlot slot);
+        void Remove(object sender, InventoryItemType itemType, int amount = 1);
+        bool HasItem(InventoryItemType itemType, out IInventoryItem item);
+        public event Action<object> OnInventoryStateChangedEvent;
+       
     }
 }

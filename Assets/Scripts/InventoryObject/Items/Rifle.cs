@@ -2,8 +2,8 @@
 using Assets.Scripts.InventoryObject.Data;
 
 namespace Assets.Scripts.InventoryObject.Items {
-    public class Pepper : InventoryItem {
-        public Pepper(InventoryItemInfo info) : base(info) { }
+    public class Rifle : InventoryItem {
+        public Rifle(InventoryItemInfo info) : base(info) { }
        
     }
 }

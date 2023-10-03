@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.InventoryObject.Data;
+using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject.Abstract {
     public interface IInventoryItemInfo {
-        string id { get; }
-        string title { get; }
-        string description { get; }
-        public int maxItemsInInventorySlot { get; }
-        Sprite spriteIcon { get; }
+        InventoryItemType ItemType { get; }
+        string Id { get; }
+        string Title { get; }
+        string Description { get; }
+        public int MaxAmountSlot { get; }
+        Sprite SpriteIcon { get; }
 
     }
 }

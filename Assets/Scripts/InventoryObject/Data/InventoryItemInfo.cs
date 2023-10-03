@@ -1,24 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Items;
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject.Data {
 
-    public enum InventoryItemType { Apple, Pepper, }
+    
 
     [CreateAssetMenu(fileName = "InventoryItemInfo", menuName = "PocketZoneTest/Items/Create New Item Info")]
-    public class InventoryItemInfo : ScriptableObject {
-        public static Dictionary<InventoryItemType, Type> itemTypeToClassMap = new Dictionary<InventoryItemType, Type> {
-        { InventoryItemType.Apple, typeof(Apple) },
-        { InventoryItemType.Pepper, typeof(Pepper) },
-        // ... другие типы предметов
-        };
-        public InventoryItemType inventoryItemType;
-        public string id;
-        public string title;
-        public string description;
-        public int maxAmountSlot;
-        public Sprite spriteIcon;
+    public class InventoryItemInfo : ScriptableObject, IInventoryItemInfo {
+        
+        
+        [SerializeField]private string _id;
+        [SerializeField] private string _title;
+        [SerializeField] private string _description;
+        [SerializeField] private int _maxAmountSlot;
+        [SerializeField] private Sprite _spriteIcon;
+        [SerializeField] public InventoryItemType _itemType;
+        public InventoryItemType ItemType => _itemType;
+        public string Id => _id;
+        public string Title => _title;
+        public string Description => _description;
+        public int MaxAmountSlot => _maxAmountSlot;
+        public Sprite SpriteIcon => _spriteIcon;
     }
 }
