@@ -3,6 +3,7 @@ using System.Linq;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Data;
 using Assets.Scripts.InventoryObject.Items;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject {
@@ -10,7 +11,8 @@ namespace Assets.Scripts.InventoryObject {
         public event Action<object, IInventoryItem, int> OnInventoryItemAddedEvent;
         public event Action<object, InventoryItemType, int> OnInventoryItemRemovedEvent;
         public event Action<object> OnInventoryStateChangedEvent;
-        
+        public event Action <object, IInventoryItemInfo, int> OnInventoryOneItemInSelectedSlotRemovedEvent;
+
 
         public int Capacity { get; set; }
         public bool IsFull => Slots.All(slot => slot.IsFull);
@@ -62,7 +64,7 @@ namespace Assets.Scripts.InventoryObject {
                 _selectedSlot = slot;
                 Debug.Log($"Select slot nit empty and selectedSlot == null ---- {_selectedSlot==null} : setup selectedSlot");
                 OnInventoryStateChangedEvent?.Invoke(this);
-                
+
                 return;
             }
             Debug.Log("Никакие условия не выполнены!!");
@@ -81,7 +83,7 @@ namespace Assets.Scripts.InventoryObject {
         }
 
         public IInventorySlot GetSelectedSlot() {
-           return Slots.FirstOrDefault(slot => slot.IsSelect);
+            return Slots.FirstOrDefault(slot => slot.IsSelect);
         }
 
         public IInventoryItem GetItem(InventoryItemType itemType) {
@@ -107,66 +109,56 @@ namespace Assets.Scripts.InventoryObject {
             return Slots.Where(slot => !slot.IsEmpty && slot.Item.ItemType == itemType).Sum(slot => slot.GetItemAmount);
         }
 
-        // public bool Add() {
-        //
-        // }
-        // public bool AddToSlot() {
-        //
-        // }
-
         public bool TryToAdd(object sender, IInventoryItem item) {
-            // Поиск слота с тем же типом предмета, который не пуст и не полон
-            var slotWithSameItemButNotEmpty = Slots
-                .FirstOrDefault(slot => !slot.IsEmpty && !slot.IsFull && slot.Item.ItemType == item.ItemType);
+            while (item.State.Amount > 0) {
+                // Поиск всех слотов с тем же типом предмета, которые не полны
+                var suitableSlots = Slots
+                    .Where(slot => (slot.IsEmpty || (slot.Item.ItemType == item.ItemType && !slot.IsFull)))
+                    .ToList();
 
-            if (slotWithSameItemButNotEmpty != null)
-                return TryAddToSlot(sender, slotWithSameItemButNotEmpty, item);
+                if (!suitableSlots.Any()) {
+                    Debug.Log("Нет места для предметов в инвентаре!!!");
+                    return false; // Если не найдено ни одного подходящего слота
+                }
 
-            // Поиск пустого слота
-            var emptySlot = Slots.FirstOrDefault(slot => slot.IsEmpty);
-            if (emptySlot != null)
-                return TryAddToSlot(sender, emptySlot, item);
+                bool itemAdded = false;
 
-            Debug.Log("Нет места для предметов в инвентаре!!!");
-            return false;
+                foreach (var slot in suitableSlots) {
+                    if (item.State.Amount <= 0) break; // Если весь предмет был добавлен
+                    if (TryAddToSlot(sender, slot, item)) {
+                        itemAdded = true;
+                    }
+                }
+
+                if (!itemAdded) {
+                    return false; // Если предмет не был добавлен ни в один из слотов
+                }
+            }
+
+            return true;
         }
 
         public bool TryAddToSlot(object sender, IInventorySlot slot, IInventoryItem item) {
-            Debug.Log($"IInventory slot is null : {slot==null}");
-            Debug.Log($"IInventory item is null : {item==null}");
-            Debug.Log($"IInventory item Info is null : {item.Info==null} and ItemInfo = {item.Info.ItemType.ToString()}");
-            if (item == null) return false;
-            var fits = slot.GetItemAmount + item.State.Amount <= item.Info.MaxAmountSlot;
-            var amountToAdd = fits
-                ? item.State.Amount
-                : item.Info.MaxAmountSlot - slot.GetItemAmount;
-            var amountLeft = item.State.Amount - amountToAdd;
-            var clonedItem = new InventoryItem(item.Info);
-            clonedItem.Amount =amountToAdd;
-            
+            var amountToAdd = Math.Min(item.Info.MaxAmountSlot - slot.GetItemAmount, item.State.Amount);
+
             if (slot.IsEmpty) {
-                
-                slot.Item=clonedItem;
-                Debug.Log($"slot.Item.State.GetItemAmount === {slot.Item.State.Amount}");
-                
-                Debug.Log("Setup Item!");
+                var clonedItem = new InventoryItem(item.Info) {
+                    Amount = amountToAdd
+                };
+                slot.Item = clonedItem;
             } else {
-                slot.Item.State.Amount +=amountToAdd;
-                Debug.Log("Added Item!");
+                slot.Item.State.Amount += amountToAdd;
             }
 
+            item.State.Amount -= amountToAdd;
 
-            Debug.Log($"Item added to _inventory. InventoryItemType: {item.ItemType}, GetItemAmount: {amountToAdd}");
             OnInventoryItemAddedEvent?.Invoke(sender, item, amountToAdd);
             OnInventoryStateChangedEvent?.Invoke(sender);
 
-            if (amountLeft <= 0)
-                return true;
-            //if (IsFull) return true;
-
-            item.Amount=amountLeft;
-            return TryToAdd(sender, item);
+            return true;
         }
+
+
 
 
         public void TransitFromSlotToSlot(object sender, IInventorySlot fromSlot, IInventorySlot toSlot) {
@@ -189,7 +181,7 @@ namespace Assets.Scripts.InventoryObject {
                 return;
             }
 
-            
+
             if (toSlot.IsEmpty) {
                 toSlot.Item =new InventoryItem(fromSlot.Item.Info);
                 toSlot.Item.Amount=fromSlot.GetItemAmount;
@@ -220,7 +212,7 @@ namespace Assets.Scripts.InventoryObject {
                 DeselectSelectedSlot();
                 return;
             }
-            
+
 
         }
 
@@ -252,6 +244,30 @@ namespace Assets.Scripts.InventoryObject {
             }
         }
 
+        public void RemoveOneAmountItemInSelectedSlot(object sender) {
+            if (_selectedSlot.IsEmpty || !_selectedSlot.IsSelect ) {
+                Debug.Log("SelectedSlot Null!!!");
+                OnInventoryStateChangedEvent?.Invoke(sender);
+                return;
+            }
+
+            if (_selectedSlot.GetItemAmount >= 1)
+                _selectedSlot.Item.State.Amount -= 1;
+
+            if (_selectedSlot.GetItemAmount <= 0) {
+                
+                _selectedSlot.Clear();
+                //DeselectSelectedSlot();
+                OnInventoryStateChangedEvent?.Invoke(sender);
+                return;
+            }
+           
+           
+            OnInventoryStateChangedEvent?.Invoke(sender);
+            OnInventoryOneItemInSelectedSlotRemovedEvent?.Invoke(sender, _selectedSlot.Item.Info, 1);
+            
+
+        }
 
         public bool HasItem(InventoryItemType itemType, out IInventoryItem item) {
             item = GetItem(itemType);
@@ -275,3 +291,60 @@ namespace Assets.Scripts.InventoryObject {
         }
     }
 }
+
+
+
+
+// public bool TryToAdd(object sender, IInventoryItem item) {
+//     // Поиск слота с тем же типом предмета, который не пуст и не полон
+//     var slotWithSameItemButNotEmpty = Slots
+//         .FirstOrDefault(slot => !slot.IsEmpty && !slot.IsFull && slot.Item.ItemType == item.ItemType);
+//
+//     if (slotWithSameItemButNotEmpty != null)
+//         return TryAddToSlot(sender, slotWithSameItemButNotEmpty, item);
+//
+//     // Поиск пустого слота
+//     var emptySlot = Slots.FirstOrDefault(slot => slot.IsEmpty);
+//     if (emptySlot != null)
+//         return TryAddToSlot(sender, emptySlot, item);
+//
+//     Debug.Log("Нет места для предметов в инвентаре!!!");
+//     return false;
+// }
+//
+// public bool TryAddToSlot(object sender, IInventorySlot slot, IInventoryItem item) {
+//     Debug.Log($"IInventory slot is null : {slot==null}");
+//     Debug.Log($"IInventory item is null : {item==null}");
+//     Debug.Log($"IInventory item Info is null : {item.Info==null} and ItemInfo = {item.Info.ItemType.ToString()}");
+//     if (item == null) return false;
+//     var fits = slot.GetItemAmount + item.State.Amount <= item.Info.MaxAmountSlot;
+//     var amountToAdd = fits
+//         ? item.State.Amount
+//         : item.Info.MaxAmountSlot - slot.GetItemAmount;
+//     var amountLeft = item.State.Amount - amountToAdd;
+//     var clonedItem = new InventoryItem(item.Info);
+//     clonedItem.Amount =amountToAdd;
+//
+//     if (slot.IsEmpty) {
+//
+//         slot.Item=clonedItem;
+//         Debug.Log($"slot.Item.State.GetItemAmount === {slot.Item.State.Amount}");
+//
+//         Debug.Log("Setup Item!");
+//     } else {
+//         slot.Item.State.Amount +=amountToAdd;
+//         Debug.Log("Added Item!");
+//     }
+//
+//
+//     Debug.Log($"Item added to _inventory. InventoryItemType: {item.ItemType}, GetItemAmount: {amountToAdd}");
+//     OnInventoryItemAddedEvent?.Invoke(sender, item, amountToAdd);
+//     OnInventoryStateChangedEvent?.Invoke(sender);
+//
+//     if (amountLeft <= 0)
+//         return true;
+//     //if (IsFull) return true;
+//
+//     item.Amount=amountLeft;
+//     return TryToAdd(sender, item);
+// }

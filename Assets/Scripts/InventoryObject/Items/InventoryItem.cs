@@ -12,6 +12,7 @@ namespace Assets.Scripts.InventoryObject.Items {
         public InventoryItem(IInventoryItemInfo itemInfo) {
             _info = itemInfo;
             _state = new InventoryItemState();
+            //_state.Amount = _info.MaxAmountSlot;
         }
         
         public IInventoryItemInfo Info => _info;

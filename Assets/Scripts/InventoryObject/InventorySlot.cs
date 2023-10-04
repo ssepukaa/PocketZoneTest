@@ -26,6 +26,7 @@ namespace Assets.Scripts.InventoryObject {
         
         public void Clear() {
            if(_isEmpty) return;
+           _isSelect = false;
            _item.Amount = 0;
            _item = null;
         }

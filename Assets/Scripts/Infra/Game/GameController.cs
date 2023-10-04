@@ -2,6 +2,7 @@
 using System.Collections;
 using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game.Data;
+using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.Player;
 using Assets.Scripts.UI;
 using UnityEngine;
@@ -11,9 +12,11 @@ namespace Assets.Scripts.Infra.Game {
     public enum SceneNames { Boot, Menu, Game1, Game2, }
 
     public class GameController : MonoBehaviour, IGameController {
-        public IGameResourceData RD { get; }
+        public IGameResourceData RD => _rd;
+
         [SerializeField] private GameModelData _md;
         [SerializeField] private GameResourceData _rd;
+        
 
 
         void Awake() {
@@ -25,7 +28,7 @@ namespace Assets.Scripts.Infra.Game {
             _rd.IUIController = uiController;
             _rd.GameMode = new GameMode(this);
             _rd.GameState = new GameState(this);
-            _rd.GameInventoryItemsFactory = new GameInventoryItemsFactory(this);
+            
             _rd.Bootstrapper.InitGameComplete();
 
         }
@@ -59,8 +62,11 @@ namespace Assets.Scripts.Infra.Game {
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
 
-
+        public void CreateLoot(object sender, Vector2 position, IInventoryItemInfo info, int amount) {
+            var factory = new GameInventoryItemsFactory(this);
+            factory.CreateInventoryItem(sender, position, info, amount);
         }
 
         void Update() {

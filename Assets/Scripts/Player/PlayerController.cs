@@ -1,10 +1,12 @@
 ﻿using Assets.Scripts.Infra.Game;
 using Assets.Scripts.InventoryObject;
 using Assets.Scripts.InventoryObject.Abstract;
+using Assets.Scripts.InventoryObject.Data;
 using Assets.Scripts.Player.Abstract;
 using Assets.Scripts.Player.Data;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.InventoryUI;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Scripts.Player {
@@ -19,6 +21,7 @@ namespace Assets.Scripts.Player {
             rd.UIController = uiController;
             rd.PlayerInput = GetComponent<PlayerInputComp>();
             rd.Inventory = new Inventory(rd.CapacityInventory);
+            rd.Inventory.OnInventoryOneItemInSelectedSlotRemovedEvent += OnInventoryOneItemInSelectedSlotRemoved;
             rd.PlayerInput = GetComponent<PlayerInputComp>();
             rd.PlayerInput.Construct(this);
             rd.UIController.SetInventory(rd.Inventory);
@@ -29,6 +32,11 @@ namespace Assets.Scripts.Player {
 
         }
 
+        private void OnInventoryOneItemInSelectedSlotRemoved(object obj, IInventoryItemInfo itemInfo, int amount) {
+            Debug.Log($"PlayerController Item Removed!  {itemInfo.ItemType} + Amount: {amount}");
+            rd.GameController.CreateLoot(this, transform.position, itemInfo, amount);
+        }
+
         public bool CollectLoot(object sender, IInventoryItem item) {
             rd.Inventory.TryToAdd(sender, item);
             return true;
@@ -37,6 +45,10 @@ namespace Assets.Scripts.Player {
 
         public void OpenInventory() {
            rd.UIController.ShowWindow(UIWindowsType.Inventory);
+        }
+
+        private void OnDestroy() {
+            rd.Inventory.OnInventoryOneItemInSelectedSlotRemovedEvent -= OnInventoryOneItemInSelectedSlotRemoved;
         }
     }
 }

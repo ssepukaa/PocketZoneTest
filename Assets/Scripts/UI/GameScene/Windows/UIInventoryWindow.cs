@@ -35,9 +35,12 @@ namespace Assets.Scripts.UI.GameScene.Windows {
 
         public void OnCloseButton() {
             _controller.ShowWindow(UIWindowsType.HUD);
+
         }
 
-        public void OnDropButton() { }
+        public void OnDropButton() {
+            _inventory.OnRemoveItemButton();
+        }
 
         public void UpdateUI(IInventorySlot slot) {
             if (slot == null) {

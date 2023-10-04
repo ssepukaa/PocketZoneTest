@@ -17,8 +17,9 @@ namespace Assets.Scripts.InventoryObject.Abstract {
         bool TryAddToSlot(object sender, IInventorySlot slot, IInventoryItem item);
         public void ButtonSlotSelected(IInventorySlot slot);
         void Remove(object sender, InventoryItemType itemType, int amount = 1);
+        public void RemoveOneAmountItemInSelectedSlot(object sender);
         bool HasItem(InventoryItemType itemType, out IInventoryItem item);
         public event Action<object> OnInventoryStateChangedEvent;
-       
+        public event Action<object, IInventoryItemInfo, int> OnInventoryOneItemInSelectedSlotRemovedEvent;
     }
 }

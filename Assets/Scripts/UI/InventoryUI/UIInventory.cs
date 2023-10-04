@@ -40,9 +40,9 @@ namespace Assets.Scripts.UI.InventoryUI {
             _player = playerController;
             _itemsInfoDataBase = _player.rd.inventoryInfosData;
             _inventoryWindow = GetComponentInChildren<UIInventoryWindow>();
-            SetItems();
+           // SetItems();
             
-            AddItems();
+           // AddItems();
             InitializeSlots();
             UpdateUI();
             
@@ -69,7 +69,6 @@ namespace Assets.Scripts.UI.InventoryUI {
                 UIInventorySlot uiSlot = slotGO.GetComponent<UIInventorySlot>();
                 _uiSlots[i] = uiSlot;
                 _uiSlots[i].Construct(this, _player.rd.Inventory.GetSlotByIndex(i), i);
-                Debug.Log($"_player.rd.Inventory.GetSlotByIndex(i).IsEmpty ====={_player.rd.Inventory.GetSlotByIndex(i).IsEmpty} and number of slot = {i}");
             }
 
 
@@ -88,17 +87,26 @@ namespace Assets.Scripts.UI.InventoryUI {
         public void UpdateUI() {
             foreach (var uiSlot in _uiSlots) {
                 uiSlot.Refresh();
+                
             }
+            _inventoryWindow.UpdateUI(_player.rd.Inventory.GetSelectedSlot());
         }
 
         private void OnInventoryChanged(object sender) {
             UpdateUI();
+
+
         }
         
         public void OnSlotButton(IInventorySlot slot) {
             _player.rd.Inventory.ButtonSlotSelected(slot);
-            
-            _inventoryWindow.UpdateUI(_player.rd.Inventory.GetSelectedSlot());
+            UpdateUI();
+
+        }
+
+        public void OnRemoveItemButton() {
+            _player.rd.Inventory.RemoveOneAmountItemInSelectedSlot(this);
+            UpdateUI();
         }
 
     }

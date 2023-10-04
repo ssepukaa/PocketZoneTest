@@ -6,7 +6,7 @@ namespace Assets.Scripts.InventoryObject {
     public class InventoryItemState: IInventoryItemState {
 
         private int _amount;
-        private bool _isItemEquipped;
+        private bool _isItemEquipped=false;
         public int Amount {
             get => _amount;
             set => _amount = value;
@@ -18,7 +18,7 @@ namespace Assets.Scripts.InventoryObject {
         }
 
         public InventoryItemState() { 
-            _amount = 0;
+            _amount = 1;
             _isItemEquipped = false;
         }
 

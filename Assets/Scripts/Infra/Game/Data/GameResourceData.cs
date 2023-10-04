@@ -17,10 +17,11 @@ namespace Assets.Scripts.Infra.Game.Data {
 
 
         public GameObject LootPrefab => _lootPrefab;
-    }
+        
 
-    public interface IGameResourceData {
-        public GameObject LootPrefab { get; }
+        public IGameInventoryItemsFactory InventoryItemsFactory {
+            get => GameInventoryItemsFactory;
+            set => GameInventoryItemsFactory = value;
+        }
     }
-    
 }

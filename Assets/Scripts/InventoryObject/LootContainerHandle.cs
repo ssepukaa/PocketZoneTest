@@ -11,10 +11,14 @@ namespace Assets.Scripts.InventoryObject {
         private IInventorySlot _slot;
         private IInventoryItem _item;
         public InventoryItemInfo ItemInfo;
+        public int Amount;
         void Start() {
             _renderer = GetComponent<SpriteRenderer>();
             _item = new InventoryItem(ItemInfo);
+            Debug.Log($"LootHandler Item Amount = {_item.Amount}");
             _renderer.sprite = ItemInfo.SpriteIcon;
+            _item.Amount = Amount;
+           
             
         }
 

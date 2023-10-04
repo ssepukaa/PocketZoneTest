@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f935cecec6cf0439eed92ef519bd60, type: 3}
   m_Name: AmmoInfo
   m_EditorClassIdentifier: 
-  inventoryItemType: 0
   _id: ammo
   _title: Ammo
   _description: Ammo Description
-  _maxAmountSlot: 10
+  _maxAmountSlot: 100
   _spriteIcon: {fileID: 21300000, guid: d45f0cae013abb84688afe6e4bc52845, type: 3}
+  _itemType: 1

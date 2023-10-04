@@ -17,6 +17,7 @@ namespace Assets.Scripts.Player {
             Debug.Log("OnTrigger Enter!");
             ILootContainer loot = other.GetComponent<ILootContainer>();
             if (loot != null) {
+                Debug.Log($"PlayerController not null init = {_c!= null}");
                 _c.CollectLoot(other, loot.CollectLoot()) ;
             }
         }

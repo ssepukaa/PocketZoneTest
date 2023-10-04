@@ -1,5 +1,8 @@
-﻿using Assets.Scripts.InventoryObject.Data;
+﻿using Assets.Scripts.InventoryObject;
+using Assets.Scripts.InventoryObject.Abstract;
+using Assets.Scripts.InventoryObject.Data;
 using Assets.Scripts.Player;
+using Assets.Scripts.Player.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.Infra.Game {
@@ -11,18 +14,26 @@ namespace Assets.Scripts.Infra.Game {
             _c = controller;
         }
 
-        public GameObject CreateInventoryItem(object sender, Vector2 position, InventoryItemType itemTypem, int amount) {
-            var _sender = sender as GameObject;
+        public void CreateInventoryItem(object sender, Vector2 position, IInventoryItemInfo info, int amount) {
+            IPlayerController playerController = sender as IPlayerController;
             GameObject Item = null;
-            if (_sender.GetComponent<PlayerController>()) {
+            
+            if (playerController != null) {
                 Item = Object.Instantiate(_c.RD.LootPrefab, FindSpawnPosition(position),Quaternion.identity);
+                
             }
             else {
                 Item = Object.Instantiate(_c.RD.LootPrefab, position, Quaternion.identity);
             }
 
-            return Item;
+            var lootCont = Item.GetComponent<LootContainer>();
+            if (lootCont != null) {
+                lootCont.Construct(info, amount);
+            }
+           
         }
+
+       
 
 
         private Vector2 FindSpawnPosition(Vector2 center) {
