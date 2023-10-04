@@ -109,5 +109,8 @@ namespace Assets.Scripts.UI.InventoryUI {
             UpdateUI();
         }
 
+        public void OnEquipItemButton() {
+            _player.rd.Inventory.EquipItem(this);
+        }
     }
 }

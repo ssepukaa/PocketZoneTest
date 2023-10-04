@@ -16,8 +16,11 @@ namespace Assets.Scripts.InventoryObject {
 
         public int Capacity { get; set; }
         public bool IsFull => Slots.All(slot => slot.IsFull);
-        public IInventorySlot[] Slots;
 
+        public IInventorySlot WeaponSlot => _weaponSlot;
+
+        public IInventorySlot[] Slots;
+        private IInventorySlot _weaponSlot;
         private IInventorySlot _selectedSlot;
 
         public Inventory(int capacity) {
@@ -267,6 +270,17 @@ namespace Assets.Scripts.InventoryObject {
             OnInventoryOneItemInSelectedSlotRemovedEvent?.Invoke(sender, _selectedSlot.Item.Info, 1);
             
 
+        }
+
+        public bool EquipItem(object sender) {
+            
+            if (_selectedSlot.IsEmpty || !_selectedSlot.IsSelect) {
+                Debug.Log("SelectedSlot Null!!!");
+                OnInventoryStateChangedEvent?.Invoke(sender);
+                return false;
+            }
+
+            return true;
         }
 
         public bool HasItem(InventoryItemType itemType, out IInventoryItem item) {

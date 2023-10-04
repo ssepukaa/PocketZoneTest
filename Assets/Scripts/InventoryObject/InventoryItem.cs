@@ -1,8 +1,7 @@
-using System;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Data;
 
-namespace Assets.Scripts.InventoryObject.Items {
+namespace Assets.Scripts.InventoryObject {
     public class InventoryItem: IInventoryItem{
 
         private IInventoryItemInfo _info;

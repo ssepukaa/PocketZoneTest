@@ -12,6 +12,7 @@ namespace Assets.Scripts.UI.GameScene.Windows {
 
         public TMP_Text DescriptionItemText;
         public Button DropItemButton;
+        public Button EquipItemButton;
         private UIInventory _inventory;
         private IInventoryItemInfo _inventoryItemInfo;
        
@@ -21,6 +22,7 @@ namespace Assets.Scripts.UI.GameScene.Windows {
             _inventory = GetComponentInParent<UIInventory>();
             idUIWindowsType = UIWindowsType.Inventory;
             DropItemButton.gameObject.SetActive(false);
+            EquipItemButton.gameObject.SetActive(false);
         }
 
         private void OnEnable() {
@@ -42,15 +44,21 @@ namespace Assets.Scripts.UI.GameScene.Windows {
             _inventory.OnRemoveItemButton();
         }
 
+        public void OnEquipItemButton() {
+            _inventory.OnEquipItemButton();
+        }
+
         public void UpdateUI(IInventorySlot slot) {
             if (slot == null) {
                 DescriptionItemText.text = String.Empty;
                 DropItemButton.gameObject.SetActive(false);
+                EquipItemButton.gameObject.SetActive(false);
 
             } else {
                 _inventoryItemInfo = slot.Item.Info;
                 DescriptionItemText.text = _inventoryItemInfo.Description;
                 DropItemButton.gameObject.SetActive(true);
+                EquipItemButton.gameObject.SetActive(true);
             }
 
 
