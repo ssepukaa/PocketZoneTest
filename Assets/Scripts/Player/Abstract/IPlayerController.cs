@@ -6,5 +6,6 @@ namespace Assets.Scripts.Player.Abstract {
     public interface IPlayerController {
         public void Construct(IGameController gameController, IUIController uiController);
         public bool CollectLoot(object sender, IInventoryItem item);
+        void StartFire();
     }
 }

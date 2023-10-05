@@ -105,9 +105,13 @@ namespace Assets.Scripts.UI {
 
         #region GameScene
 
-        public void OnInventory() {
-            Debug.Log("Inventory open!");
+        public void OnFireButton() {
+            _rd._gameController.RD.Player.StartFire();
+        }
 
+        public void OnInventoryButton() {
+            Debug.Log("Inventory open!");
+            ShowWindow(UIWindowsType.Inventory);
         }
 
         #endregion

@@ -1,8 +1,6 @@
 ﻿using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Data;
-using Assets.Scripts.InventoryObject.Items;
 using UnityEngine;
-using static UnityEngine.AdaptivePerformance.Provider.AdaptivePerformanceSubsystemDescriptor;
 
 namespace Assets.Scripts.InventoryObject {
     public class LootContainerHandle : MonoBehaviour, ILootContainer {

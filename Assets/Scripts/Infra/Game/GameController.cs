@@ -54,8 +54,8 @@ namespace Assets.Scripts.Infra.Game {
                 case SceneNames.Menu:
                     break;
                 case SceneNames.Game1:
-                    _rd.PlayerController = FindObjectOfType<PlayerController>();
-                    _rd.PlayerController.Construct(this, _rd.IUIController);
+                    _rd.Player = FindObjectOfType<PlayerController>();
+                    _rd.Player.Construct(this, _rd.IUIController);
                     break;
                 case SceneNames.Game2:
                     break;
@@ -66,7 +66,12 @@ namespace Assets.Scripts.Infra.Game {
 
         public void CreateLoot(object sender, Vector2 position, IInventoryItemInfo info, int amount) {
             var factory = new GameInventoryItemsFactory(this);
-            factory.CreateInventoryItem(sender, position, info, amount);
+            factory.CreateInventoryLootItem(sender, position, info, amount);
+        }
+
+    public void CreateBullet(object sender, Transform transform, IInventoryItemInfo info, int amount) {
+            var factory = new GameInventoryItemsFactory(this);
+            factory.CreateBullet(sender, transform,info, amount);
         }
 
         void Update() {

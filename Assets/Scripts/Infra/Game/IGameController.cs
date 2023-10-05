@@ -13,5 +13,6 @@ namespace Assets.Scripts.Infra.Game {
         void PlayButtonInSceneMenu();
         IGameResourceData RD { get; }
         void CreateLoot(object sender, Vector2 transformPosition, IInventoryItemInfo itemInfo, int amount);
+        void CreateBullet(object sender,Transform transform, IInventoryItemInfo info, int amount);
     }
 }

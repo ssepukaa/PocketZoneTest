@@ -40,7 +40,7 @@ namespace Assets.Scripts.UI.InventoryUI {
             
         }
 
-        public void SelectToggle( bool isSelected) {
+        private void SelectToggle( bool isSelected) {
             switch (isSelected) {
                 case true:
                     //_isSelected = true;
@@ -53,11 +53,20 @@ namespace Assets.Scripts.UI.InventoryUI {
             }
             
         }
+
+        // private void CheckEquippedItemImage() {
+        //     if(_slot.IsEmpty) {return; }
+        //
+        //     if (_slot.Item.State.IsEquipped) {
+        //
+        //     }
+        // }
         
         public void Refresh() {
             
            // if (_slot != null) {
                 SelectToggle(_slot.IsSelect);
+                //CheckEquippedItemImage();
                 _uiInventoryItem.Refresh(_slot);
            // }
         }

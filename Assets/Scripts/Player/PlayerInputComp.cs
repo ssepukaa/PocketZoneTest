@@ -22,13 +22,14 @@ namespace Assets.Scripts.Player {
             _movement = value.Get<Vector2>();
         }
 
-        private void OnFire() {
-            Debug.Log("Fire!");
-        }
+        // private void OnFire() {
+        //     Debug.Log("Fire!");
+        //     Player.StartFire();
+        // }
 
-        private void OnInventory() {
-            _player.OpenInventory();
-        }
+        // private void OnInventory() {
+        //     Player.OpenInventory();
+        // }
 
         private void FixedUpdate() {
             _rb.MovePosition(_rb.position + _movement*Time.fixedDeltaTime*_speed);

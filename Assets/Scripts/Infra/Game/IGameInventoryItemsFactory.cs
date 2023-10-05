@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Infra.Game {
     public interface IGameInventoryItemsFactory {
-        void CreateInventoryItem(object sender,Vector2 position, IInventoryItemInfo itemInf, int amount);
+        void CreateInventoryLootItem(object sender,Vector2 position, IInventoryItemInfo itemInfo, int amount = 1);
+        void CreateBullet(object sender, Transform transform, IInventoryItemInfo  itemInfo, int amount =1 );
     }
 }

@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AmmoInfo: {fileID: 11400000, guid: fad2f8be672f09e4e95c98fb62f5e017, type: 2}
   RifleInfo: {fileID: 11400000, guid: 0a81299f01766de448be52af2c21e453, type: 2}
+  PistolInfo: {fileID: 11400000, guid: fc0287c6888d724419d058ecb8e3584b, type: 2}

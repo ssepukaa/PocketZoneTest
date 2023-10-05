@@ -12,5 +12,7 @@ namespace Assets.Scripts.UI {
         public void ShowWindow(UIWindowsType windowType);
         void SetInventory(IInventory inventory);
         IInventory GetInventory();
+        void OnFireButton();
+        void OnInventoryButton();
     }
 }

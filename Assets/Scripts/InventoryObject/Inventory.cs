@@ -2,8 +2,6 @@
 using System.Linq;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Data;
-using Assets.Scripts.InventoryObject.Items;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject {
@@ -11,7 +9,9 @@ namespace Assets.Scripts.InventoryObject {
         public event Action<object, IInventoryItem, int> OnInventoryItemAddedEvent;
         public event Action<object, InventoryItemType, int> OnInventoryItemRemovedEvent;
         public event Action<object> OnInventoryStateChangedEvent;
-        public event Action <object, IInventoryItemInfo, int> OnInventoryOneItemInSelectedSlotRemovedEvent;
+        public event Action<object, IInventoryItemInfo, int> OnOneItemInSelectedSlotDroppedEvent;
+        public event Action<object, IInventoryItemInfo, int> OnRemoveOneAmountItemInSelectedSlotEquippedEvent;
+        public event Action<object, IInventoryItem, int> OnOneItemAmmoRemovedEvent;
 
 
         public int Capacity { get; set; }
@@ -29,6 +29,10 @@ namespace Assets.Scripts.InventoryObject {
         }
 
         private void InitializeSlots(int capacity) {
+            _weaponSlot = new InventorySlot();
+            _selectedSlot =new InventorySlot();
+            DeselectSelectedSlot();
+
             Slots = new InventorySlot[capacity];
             for (int i = 0; i < capacity; i++) {
                 Slots[i] = new InventorySlot();
@@ -75,8 +79,11 @@ namespace Assets.Scripts.InventoryObject {
         }
 
         private void DeselectSelectedSlot() {
-            _selectedSlot.Deselect();
-            _selectedSlot = null;
+            if (_selectedSlot != null) {
+                _selectedSlot.Deselect();
+                _selectedSlot = null;
+            }
+
             OnInventoryStateChangedEvent?.Invoke(this);
 
         }
@@ -93,6 +100,10 @@ namespace Assets.Scripts.InventoryObject {
             return Slots.FirstOrDefault(slot => slot.ItemType == itemType)?.Item;
 
         }
+        public IInventorySlot GetAmmoSlotByType(ItemAmmoType itemType) {
+            return Slots.FirstOrDefault(slot => slot != null && slot.Item != null && slot.Item.Info != null && slot.Item.Info.AmmoType == itemType);
+        }
+
 
         public IInventoryItem[] GetAllItems() {
             return Slots.Where(slot => !slot.IsEmpty).Select(slot => slot.Item).ToArray();
@@ -247,40 +258,85 @@ namespace Assets.Scripts.InventoryObject {
             }
         }
 
-        public void RemoveOneAmountItemInSelectedSlot(object sender) {
-            if (_selectedSlot.IsEmpty || !_selectedSlot.IsSelect ) {
-                Debug.Log("SelectedSlot Null!!!");
-                OnInventoryStateChangedEvent?.Invoke(sender);
-                return;
-            }
-
-            if (_selectedSlot.GetItemAmount >= 1)
-                _selectedSlot.Item.State.Amount -= 1;
-
-            if (_selectedSlot.GetItemAmount <= 0) {
-                
-                _selectedSlot.Clear();
-                //DeselectSelectedSlot();
-                OnInventoryStateChangedEvent?.Invoke(sender);
-                return;
-            }
-           
-           
-            OnInventoryStateChangedEvent?.Invoke(sender);
-            OnInventoryOneItemInSelectedSlotRemovedEvent?.Invoke(sender, _selectedSlot.Item.Info, 1);
-            
-
-        }
-
-        public bool EquipItem(object sender) {
-            
-            if (_selectedSlot.IsEmpty || !_selectedSlot.IsSelect) {
+        public bool RemoveOneAmountItemInSelectedSlotDropped(object sender) {
+            if (_selectedSlot.IsEmpty || !_selectedSlot.IsSelect || _selectedSlot.GetItemAmount <= 0) {
                 Debug.Log("SelectedSlot Null!!!");
                 OnInventoryStateChangedEvent?.Invoke(sender);
                 return false;
             }
-
+            _selectedSlot.Item.State.Amount -= 1;
+            OnOneItemInSelectedSlotDroppedEvent?.Invoke(sender, _selectedSlot.Item.Info, 1);
+            if (_selectedSlot.GetItemAmount <= 0) {
+                _selectedSlot.Clear();
+               DeselectSelectedSlot();
+            }
+            OnInventoryStateChangedEvent?.Invoke(sender);
             return true;
+        }
+        public bool RemoveOneAmountItemInSelectedSlotEquipped(object sender) {
+            if (_selectedSlot.IsEmpty || !_selectedSlot.IsSelect || _selectedSlot.GetItemAmount <= 0) {
+                Debug.Log("SelectedSlot Null!!!");
+                OnInventoryStateChangedEvent?.Invoke(sender);
+                return false;
+            }
+            _selectedSlot.Item.State.Amount -= 1;
+            OnRemoveOneAmountItemInSelectedSlotEquippedEvent?.Invoke(sender, _selectedSlot.Item.Info, 1);
+            if (_selectedSlot.GetItemAmount <= 0) {
+                _selectedSlot.Clear();
+               DeselectSelectedSlot();
+            }
+            OnInventoryStateChangedEvent?.Invoke(sender);
+            return true;
+        }
+
+        public bool RemoveOneAmountItemInAmmoByType(object sender, ItemAmmoType ammoType) {
+            IInventorySlot slot = GetAmmoSlotByType(ammoType);
+            if (slot == null || slot.IsEmpty) {
+                OnInventoryStateChangedEvent?.Invoke(sender);
+                return false;
+            }
+            slot.Item.State.Amount -= 1;
+            OnOneItemAmmoRemovedEvent?.Invoke(sender, slot.Item, 1);
+            if (slot.Item.State.Amount <= 0) {
+                slot.Clear();
+            }
+            OnInventoryStateChangedEvent?.Invoke(sender);
+            return true;
+        }
+
+        public bool EquipItem(object sender) {
+
+            if (_selectedSlot.IsEmpty || !_selectedSlot.IsSelect) {
+                Debug.Log("SelectedSlot Null!!!");
+                DeselectSelectedSlot();
+                OnInventoryStateChangedEvent?.Invoke(sender);
+                return false;
+            }
+
+            if (_selectedSlot.Item.Info.ItemEquippableType == ItemIsEquippableType.Equippable) {
+                if (!WeaponSlot.IsEmpty) {
+
+                    var tempItem = new InventoryItem(WeaponSlot.Item.Info);
+                    tempItem.Amount = 1;
+                    WeaponSlot.Clear();
+                    WeaponSlot.Item =new InventoryItem(_selectedSlot.Item.Info);
+                    WeaponSlot.Item.Amount= 1;
+                    
+                    RemoveOneAmountItemInSelectedSlotEquipped(this);
+                    TryToAdd(this, tempItem);
+                    
+                } else {
+                    WeaponSlot.Item =new InventoryItem(_selectedSlot.Item.Info);
+                    WeaponSlot.Item.Amount= 1;
+
+                    RemoveOneAmountItemInSelectedSlotEquipped(this);
+
+                }
+
+            }
+            DeselectSelectedSlot();
+            return true;
+
         }
 
         public bool HasItem(InventoryItemType itemType, out IInventoryItem item) {
@@ -306,59 +362,3 @@ namespace Assets.Scripts.InventoryObject {
     }
 }
 
-
-
-
-// public bool TryToAdd(object sender, IInventoryItem item) {
-//     // Поиск слота с тем же типом предмета, который не пуст и не полон
-//     var slotWithSameItemButNotEmpty = Slots
-//         .FirstOrDefault(slot => !slot.IsEmpty && !slot.IsFull && slot.Item.ItemType == item.ItemType);
-//
-//     if (slotWithSameItemButNotEmpty != null)
-//         return TryAddToSlot(sender, slotWithSameItemButNotEmpty, item);
-//
-//     // Поиск пустого слота
-//     var emptySlot = Slots.FirstOrDefault(slot => slot.IsEmpty);
-//     if (emptySlot != null)
-//         return TryAddToSlot(sender, emptySlot, item);
-//
-//     Debug.Log("Нет места для предметов в инвентаре!!!");
-//     return false;
-// }
-//
-// public bool TryAddToSlot(object sender, IInventorySlot slot, IInventoryItem item) {
-//     Debug.Log($"IInventory slot is null : {slot==null}");
-//     Debug.Log($"IInventory item is null : {item==null}");
-//     Debug.Log($"IInventory item Info is null : {item.Info==null} and ItemInfo = {item.Info.ItemType.ToString()}");
-//     if (item == null) return false;
-//     var fits = slot.GetItemAmount + item.State.Amount <= item.Info.MaxAmountSlot;
-//     var amountToAdd = fits
-//         ? item.State.Amount
-//         : item.Info.MaxAmountSlot - slot.GetItemAmount;
-//     var amountLeft = item.State.Amount - amountToAdd;
-//     var clonedItem = new InventoryItem(item.Info);
-//     clonedItem.Amount =amountToAdd;
-//
-//     if (slot.IsEmpty) {
-//
-//         slot.Item=clonedItem;
-//         Debug.Log($"slot.Item.State.GetItemAmount === {slot.Item.State.Amount}");
-//
-//         Debug.Log("Setup Item!");
-//     } else {
-//         slot.Item.State.Amount +=amountToAdd;
-//         Debug.Log("Added Item!");
-//     }
-//
-//
-//     Debug.Log($"Item added to _inventory. InventoryItemType: {item.ItemType}, GetItemAmount: {amountToAdd}");
-//     OnInventoryItemAddedEvent?.Invoke(sender, item, amountToAdd);
-//     OnInventoryStateChangedEvent?.Invoke(sender);
-//
-//     if (amountLeft <= 0)
-//         return true;
-//     //if (IsFull) return true;
-//
-//     item.Amount=amountLeft;
-//     return TryToAdd(sender, item);
-// }

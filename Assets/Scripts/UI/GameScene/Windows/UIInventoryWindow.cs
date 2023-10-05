@@ -15,7 +15,7 @@ namespace Assets.Scripts.UI.GameScene.Windows {
         public Button EquipItemButton;
         private UIInventory _inventory;
         private IInventoryItemInfo _inventoryItemInfo;
-       
+
 
 
         private void Awake() {
@@ -41,7 +41,7 @@ namespace Assets.Scripts.UI.GameScene.Windows {
         }
 
         public void OnDropButton() {
-            _inventory.OnRemoveItemButton();
+            _inventory.OnDropItemButton();
         }
 
         public void OnEquipItemButton() {
@@ -58,7 +58,15 @@ namespace Assets.Scripts.UI.GameScene.Windows {
                 _inventoryItemInfo = slot.Item.Info;
                 DescriptionItemText.text = _inventoryItemInfo.Description;
                 DropItemButton.gameObject.SetActive(true);
-                EquipItemButton.gameObject.SetActive(true);
+                
+
+                if (slot.Item.Info.ItemEquippableType == ItemIsEquippableType.Equippable) {
+                    EquipItemButton.gameObject.SetActive(true);
+                }
+                else {
+                    EquipItemButton.gameObject.SetActive(false);
+                }
+
             }
 
 

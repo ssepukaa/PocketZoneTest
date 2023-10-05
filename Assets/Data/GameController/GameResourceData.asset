@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Bootstrapper: {fileID: 0}
   _lootPrefab: {fileID: 9121830706032711840, guid: 6820968aefdba3240bdff96e08e1bd18, type: 3}
+  _bulletPrefab: {fileID: 9121830706032711840, guid: 9df1c9435ff257f4393ce4e4a3bfe961, type: 3}

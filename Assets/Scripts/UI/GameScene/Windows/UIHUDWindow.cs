@@ -10,9 +10,12 @@ namespace Assets.Scripts.UI.GameScene.Windows {
         }
 
         public void OnOpenInventoryButton() {
-            _controller.ShowWindow(UIWindowsType.Inventory);
+            _controller.OnInventoryButton();
         }
 
+        public void FireButton() {
+            _controller.OnFireButton();
+        }
        
     }
 }

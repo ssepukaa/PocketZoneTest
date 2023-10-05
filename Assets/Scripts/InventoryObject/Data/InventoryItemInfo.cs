@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Assets.Scripts.InventoryObject.Abstract;
-using Assets.Scripts.InventoryObject.Items;
+﻿using Assets.Scripts.InventoryObject.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject.Data {
 
-    
+    public enum InventoryItemType { Empty, Ammo, Rifle, Pistol, }
+    public enum ItemFunctionalityType{None, Ammo, Weapon,}
+    public enum ItemIsEquippableType{NotEquippable,Equippable,}
+    public enum ItemAmmoType {None, RifleAmmo, PistolAmmo, }
 
     [CreateAssetMenu(fileName = "InventoryItemInfo", menuName = "PocketZoneTest/Items/Create New Item Info")]
     public class InventoryItemInfo : ScriptableObject, IInventoryItemInfo {
@@ -17,12 +17,24 @@ namespace Assets.Scripts.InventoryObject.Data {
         [SerializeField] private string _description;
         [SerializeField] private int _maxAmountSlot;
         [SerializeField] private Sprite _spriteIcon;
+        [SerializeField] private bool _isEquip;
         [SerializeField] public InventoryItemType _itemType;
-        public InventoryItemType ItemType => _itemType;
+        [SerializeField] private ItemFunctionalityType _functionalityType;
+        [SerializeField] private ItemIsEquippableType _itemEquippableType;
+        [SerializeField] private ItemAmmoType _ammoType;
+        [SerializeField] private  Sprite _bulletSprite;
         public string Id => _id;
         public string Title => _title;
         public string Description => _description;
         public int MaxAmountSlot => _maxAmountSlot;
         public Sprite SpriteIcon => _spriteIcon;
+        public bool IsEquip => _isEquip;
+
+        public Sprite BulletSprite => _bulletSprite;
+
+        public InventoryItemType ItemType => _itemType;
+        public ItemFunctionalityType FunctionalityType => _functionalityType;
+        public ItemIsEquippableType ItemEquippableType => _itemEquippableType;
+        public ItemAmmoType AmmoType => _ammoType;
     }
 }

@@ -16,3 +16,4 @@ MonoBehaviour:
   PlayerInput: {fileID: 0}
   UIInventory: {fileID: 0}
   CapacityInventory: 16
+  _muzzleTransform: {fileID: 2829333477909820037, guid: 7590c8f8e02d2804981da4c312a52470, type: 3}

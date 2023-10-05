@@ -2,7 +2,7 @@
 using Assets.Scripts.InventoryObject;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Data;
-using Assets.Scripts.InventoryObject.Items;
+
 using Assets.Scripts.Player;
 using Assets.Scripts.UI.GameScene.Windows;
 using UnityEngine;
@@ -32,7 +32,13 @@ namespace Assets.Scripts.UI.InventoryUI {
         
         private void OnDestroy() {
             _player.rd.Inventory.OnInventoryStateChangedEvent -= OnInventoryChanged;
-           
+            _player.rd.Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemoved;
+            
+
+        }
+
+        private void OnOneItemAmmoRemoved(object sender, IInventoryItem item, int amount = 1) {
+            
         }
 
 
@@ -47,7 +53,8 @@ namespace Assets.Scripts.UI.InventoryUI {
             UpdateUI();
             
             _player.rd.Inventory.OnInventoryStateChangedEvent += OnInventoryChanged;
-           
+            _player.rd.Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemoved;
+
         }
 
         private void SetItems() {
@@ -76,7 +83,7 @@ namespace Assets.Scripts.UI.InventoryUI {
         }
 
         private void AddItems() {
-            Debug.Log($"UIInventory:   _player.rd.Inventory == null {_player.rd.Inventory == null}");
+            Debug.Log($"UIInventory:   Player.rd.Inventory == null {_player.rd.Inventory == null}");
 
             _player.rd.Inventory.TryAddToSlot(this, _player.rd.Inventory.GetSlotByIndex(0), item1);
             _player.rd.Inventory.TryAddToSlot(this, _player.rd.Inventory.GetSlotByIndex(1), item2);
@@ -104,8 +111,8 @@ namespace Assets.Scripts.UI.InventoryUI {
 
         }
 
-        public void OnRemoveItemButton() {
-            _player.rd.Inventory.RemoveOneAmountItemInSelectedSlot(this);
+        public void OnDropItemButton() {
+            _player.rd.Inventory.RemoveOneAmountItemInSelectedSlotDropped(this);
             UpdateUI();
         }
 
