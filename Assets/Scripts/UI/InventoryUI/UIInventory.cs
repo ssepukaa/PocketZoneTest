@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Assets.Scripts.InventoryObject;
+﻿using Assets.Scripts.InventoryObject;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Data;
 
@@ -31,8 +30,8 @@ namespace Assets.Scripts.UI.InventoryUI {
         }
         
         private void OnDestroy() {
-            _player.rd.Inventory.OnInventoryStateChangedEvent -= OnInventoryChanged;
-            _player.rd.Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemoved;
+            _player.RD.Inventory.OnInventoryStateChangedEvent -= OnInventoryChanged;
+            _player.RD.Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemoved;
             
 
         }
@@ -44,7 +43,7 @@ namespace Assets.Scripts.UI.InventoryUI {
 
         public void Construct(PlayerController playerController) {
             _player = playerController;
-            _itemsInfoDataBase = _player.rd.inventoryInfosData;
+            //_itemsInfoDataBase = _player.RD.inventoryInfosData;
             _inventoryWindow = GetComponentInChildren<UIInventoryWindow>();
            // SetItems();
             
@@ -52,8 +51,8 @@ namespace Assets.Scripts.UI.InventoryUI {
             InitializeSlots();
             UpdateUI();
             
-            _player.rd.Inventory.OnInventoryStateChangedEvent += OnInventoryChanged;
-            _player.rd.Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemoved;
+            _player.RD.Inventory.OnInventoryStateChangedEvent += OnInventoryChanged;
+            _player.RD.Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemoved;
 
         }
 
@@ -70,12 +69,12 @@ namespace Assets.Scripts.UI.InventoryUI {
         }
 
         private void InitializeSlots() {
-            _uiSlots = new UIInventorySlot[_player.rd.CapacityInventory];
-            for (int i = 0; i < _player.rd.CapacityInventory; i++) {
+            _uiSlots = new UIInventorySlot[_player.RD.CapacityInventory];
+            for (int i = 0; i < _player.RD.CapacityInventory; i++) {
                 GameObject slotGO = Instantiate(slotPrefab, slotsContainer);
                 UIInventorySlot uiSlot = slotGO.GetComponent<UIInventorySlot>();
                 _uiSlots[i] = uiSlot;
-                _uiSlots[i].Construct(this, _player.rd.Inventory.GetSlotByIndex(i), i);
+                _uiSlots[i].Construct(this, _player.RD.Inventory.GetSlotByIndex(i), i);
             }
 
 
@@ -83,12 +82,12 @@ namespace Assets.Scripts.UI.InventoryUI {
         }
 
         private void AddItems() {
-            Debug.Log($"UIInventory:   Player.rd.Inventory == null {_player.rd.Inventory == null}");
+            Debug.Log($"UIInventory:   Player.RD.Inventory == null {_player.RD.Inventory == null}");
 
-            _player.rd.Inventory.TryAddToSlot(this, _player.rd.Inventory.GetSlotByIndex(0), item1);
-            _player.rd.Inventory.TryAddToSlot(this, _player.rd.Inventory.GetSlotByIndex(1), item2);
-            _player.rd.Inventory.TryAddToSlot(this, _player.rd.Inventory.GetSlotByIndex(2), item3);
-            _player.rd.Inventory.TryAddToSlot(this, _player.rd.Inventory.GetSlotByIndex(3), item4);
+            _player.RD.Inventory.TryAddToSlot(this, _player.RD.Inventory.GetSlotByIndex(0), item1);
+            _player.RD.Inventory.TryAddToSlot(this, _player.RD.Inventory.GetSlotByIndex(1), item2);
+            _player.RD.Inventory.TryAddToSlot(this, _player.RD.Inventory.GetSlotByIndex(2), item3);
+            _player.RD.Inventory.TryAddToSlot(this, _player.RD.Inventory.GetSlotByIndex(3), item4);
         }
 
         public void UpdateUI() {
@@ -96,7 +95,7 @@ namespace Assets.Scripts.UI.InventoryUI {
                 uiSlot.Refresh();
                 
             }
-            _inventoryWindow.UpdateUI(_player.rd.Inventory.GetSelectedSlot());
+            _inventoryWindow.UpdateUI(_player.RD.Inventory.GetSelectedSlot());
         }
 
         private void OnInventoryChanged(object sender) {
@@ -106,18 +105,18 @@ namespace Assets.Scripts.UI.InventoryUI {
         }
         
         public void OnSlotButton(IInventorySlot slot) {
-            _player.rd.Inventory.ButtonSlotSelected(slot);
+            _player.RD.Inventory.ButtonSlotSelected(slot);
             UpdateUI();
 
         }
 
         public void OnDropItemButton() {
-            _player.rd.Inventory.RemoveOneAmountItemInSelectedSlotDropped(this);
+            _player.RD.Inventory.RemoveOneAmountItemInSelectedSlotDropped(this);
             UpdateUI();
         }
 
         public void OnEquipItemButton() {
-            _player.rd.Inventory.EquipItem(this);
+            _player.RD.Inventory.EquipItem(this);
         }
     }
 }

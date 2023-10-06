@@ -6,7 +6,9 @@ namespace Assets.Scripts.InventoryObject.Abstract {
         InventoryItemType ItemType { get; }
         public ItemFunctionalityType FunctionalityType { get; }
         public ItemIsEquippableType ItemEquippableType { get; }
-        public ItemAmmoType AmmoType { get; }
+        
+        public WeaponItemInfo WeaponInfo { get; }
+        public AmmoItemInfo AmmoInfo { get; }
 
         string Id { get; }
         string Title { get; }
@@ -14,6 +16,6 @@ namespace Assets.Scripts.InventoryObject.Abstract {
         public int MaxAmountSlot { get; }
         Sprite SpriteIcon { get; }
         public bool IsEquip { get; }
-        Sprite BulletSprite { get; }
+        
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using Assets.Scripts.UI.Base;
-using UnityEngine;
+﻿using Assets.Scripts.UI.Base;
 
 namespace Assets.Scripts.UI.GameScene.Windows {
     public class UIHUDWindow : UIBaseWindows {

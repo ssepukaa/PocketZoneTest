@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game;
+using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject;
 using Assets.Scripts.InventoryObject.Abstract;
 using UnityEditor;

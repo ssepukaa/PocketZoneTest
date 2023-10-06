@@ -1,5 +1,7 @@
-﻿namespace Assets.Scripts.InventoryObject.Abstract {
+﻿using Assets.Scripts.Infra.Game.Abstract;
+
+namespace Assets.Scripts.InventoryObject.Abstract {
     public interface IBullet {
-        public bool Construct(IInventoryItemInfo info, int amount);
+        public bool Construct(IDamageSystem listener, object sender, IInventoryItemInfo info, int amount);
     }
 }

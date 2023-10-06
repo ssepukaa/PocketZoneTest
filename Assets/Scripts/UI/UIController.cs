@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
-using Assets.Scripts.Infra.Boot;
+﻿using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game;
-using Assets.Scripts.InventoryObject;
+using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.UI.Base;
 using Assets.Scripts.UI.Data;

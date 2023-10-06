@@ -101,7 +101,11 @@ namespace Assets.Scripts.InventoryObject {
 
         }
         public IInventorySlot GetAmmoSlotByType(ItemAmmoType itemType) {
-            return Slots.FirstOrDefault(slot => slot != null && slot.Item != null && slot.Item.Info != null && slot.Item.Info.AmmoType == itemType);
+            return Slots.FirstOrDefault(slot => slot != null 
+                                                && slot.Item != null
+                                                && slot.Item.Info != null
+                                                && slot.Item.Info.AmmoInfo != null
+                                                && slot.Item.Info.AmmoInfo.AmmoType == itemType);
         }
 
 
@@ -111,16 +115,19 @@ namespace Assets.Scripts.InventoryObject {
         }
 
         public IInventoryItem[] GetAllTypes(InventoryItemType itemType) {
-            return Slots.Where(slot => !slot.IsEmpty && slot.Item.ItemType == itemType).Select(slot => slot.Item).ToArray();
+            return Slots.Where(slot => !slot.IsEmpty 
+                                       && slot.Item.ItemType == itemType).Select(slot => slot.Item).ToArray();
 
         }
 
         public IInventoryItem[] GetEquippedItems() {
-            return Slots.Where(slot => !slot.IsEmpty && slot.Item.State.IsEquipped).Select(slot => slot.Item).ToArray();
+            return Slots.Where(slot => !slot.IsEmpty 
+                                       && slot.Item.State.IsEquipped).Select(slot => slot.Item).ToArray();
         }
 
         public int GetItemAmount(InventoryItemType itemType) {
-            return Slots.Where(slot => !slot.IsEmpty && slot.Item.ItemType == itemType).Sum(slot => slot.GetItemAmount);
+            return Slots.Where(slot => !slot.IsEmpty 
+                                       && slot.Item.ItemType == itemType).Sum(slot => slot.GetItemAmount);
         }
 
         public bool TryToAdd(object sender, IInventoryItem item) {
@@ -160,6 +167,11 @@ namespace Assets.Scripts.InventoryObject {
                     Amount = amountToAdd
                 };
                 slot.Item = clonedItem;
+                if (_weaponSlot == null || _weaponSlot.IsEmpty) {
+                    DeselectSelectedSlot();
+                    SelectSlot(slot);
+                    EquipItem(this);
+                }
             } else {
                 slot.Item.State.Amount += amountToAdd;
             }

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f935cecec6cf0439eed92ef519bd60, type: 3}
+  m_Name: AmmoItemInfo
+  m_EditorClassIdentifier: 
+  _id: ammo
+  _title: Ammo
+  _description: Ammo Description
+  _maxAmountSlot: 100
+  _spriteIcon: {fileID: 21300000, guid: d45f0cae013abb84688afe6e4bc52845, type: 3}
+  _isEquip: 0
+  _itemType: 1
+  _functionalityType: 1
+  _itemEquippableType: 0
+  _weaponWeaponInfo: {fileID: 0}
+  _ammoItemInfo: {fileID: 11400000, guid: 9a1584e3fcb8d5c449c113e416d6dc5c, type: 2}

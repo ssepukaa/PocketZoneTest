@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.Infra.Game {
+﻿using Assets.Scripts.Infra.Game.Abstract;
+
+namespace Assets.Scripts.Infra.Game {
     public class GameMode : IGameMode {
         private IGameController _c;
 

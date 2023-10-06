@@ -1,7 +1,6 @@
-﻿using Assets.Scripts.Infra.Game;
-using Assets.Scripts.InventoryObject;
+﻿using Assets.Scripts.Enemy.Abstract;
+using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject.Abstract;
-using Assets.Scripts.InventoryObject.Data;
 using Assets.Scripts.Player.Abstract;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.InventoryUI;
@@ -14,15 +13,19 @@ namespace Assets.Scripts.Player.Data {
         public IGameController GameController;
         public IUIController UIController;
         public IInventory Inventory;
-        public ItemsInfoDataBase inventoryInfosData;
+        //public ItemsInfoDataBase inventoryInfosData;
         public PlayerInputComp PlayerInput;
         public UIInventory UIInventory;
         public int CapacityInventory = 16;
         public IPlayerLootTrigger PlayerLootTrigger;
 
         public WeaponController WeaponController;
-        // [SerializeField]private Transform _muzzleTransform;
+        private IEnemyController _target;
 
-        //public Transform MuzzleTransform => _muzzleTransform;
+
+        public IEnemyController Target {
+            get => _target;
+            set => _target = value;
+        }
     }
 }

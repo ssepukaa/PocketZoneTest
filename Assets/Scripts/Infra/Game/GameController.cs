@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Assets.Scripts.Infra.Boot;
+using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.Infra.Game.Data;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.Player;
@@ -28,6 +29,7 @@ namespace Assets.Scripts.Infra.Game {
             _rd.IUIController = uiController;
             _rd.GameMode = new GameMode(this);
             _rd.GameState = new GameState(this);
+            _rd.DamageSystem = new DamageSystem(this);
             
             _rd.Bootstrapper.InitGameComplete();
 
@@ -65,12 +67,12 @@ namespace Assets.Scripts.Infra.Game {
         }
 
         public void CreateLoot(object sender, Vector2 position, IInventoryItemInfo info, int amount) {
-            var factory = new GameInventoryItemsFactory(this);
+            var factory = new GameItemsFactory(this);
             factory.CreateInventoryLootItem(sender, position, info, amount);
         }
 
     public void CreateBullet(object sender, Transform transform, IInventoryItemInfo info, int amount) {
-            var factory = new GameInventoryItemsFactory(this);
+            var factory = new GameItemsFactory(this);
             factory.CreateBullet(sender, transform,info, amount);
         }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using Assets.Scripts.Infra.Game;
+using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,6 +18,7 @@ namespace Assets.Scripts.Infra.Boot {
        private bool _isInitUIDone;
 
        void Awake() {
+           Application.targetFrameRate = 60;
            DontDestroyOnLoad(this);
        }
 

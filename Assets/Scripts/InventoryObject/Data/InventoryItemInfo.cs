@@ -8,7 +8,7 @@ namespace Assets.Scripts.InventoryObject.Data {
     public enum ItemIsEquippableType{NotEquippable,Equippable,}
     public enum ItemAmmoType {None, RifleAmmo, PistolAmmo, }
 
-    [CreateAssetMenu(fileName = "InventoryItemInfo", menuName = "PocketZoneTest/Items/Create New Item Info")]
+    [CreateAssetMenu(fileName = "InventoryItemInfo", menuName = "PocketZoneTest/ItemInfo/Create New Item Info")]
     public class InventoryItemInfo : ScriptableObject, IInventoryItemInfo {
         
         
@@ -21,8 +21,10 @@ namespace Assets.Scripts.InventoryObject.Data {
         [SerializeField] public InventoryItemType _itemType;
         [SerializeField] private ItemFunctionalityType _functionalityType;
         [SerializeField] private ItemIsEquippableType _itemEquippableType;
-        [SerializeField] private ItemAmmoType _ammoType;
-        [SerializeField] private  Sprite _bulletSprite;
+        
+       
+        [SerializeField] private  WeaponItemInfo _weaponWeaponInfo;
+        [SerializeField] private AmmoItemInfo _ammoItemInfo;
         public string Id => _id;
         public string Title => _title;
         public string Description => _description;
@@ -30,11 +32,15 @@ namespace Assets.Scripts.InventoryObject.Data {
         public Sprite SpriteIcon => _spriteIcon;
         public bool IsEquip => _isEquip;
 
-        public Sprite BulletSprite => _bulletSprite;
+       
 
         public InventoryItemType ItemType => _itemType;
         public ItemFunctionalityType FunctionalityType => _functionalityType;
         public ItemIsEquippableType ItemEquippableType => _itemEquippableType;
-        public ItemAmmoType AmmoType => _ammoType;
+      
+
+        public WeaponItemInfo WeaponInfo => _weaponWeaponInfo;
+
+        public AmmoItemInfo AmmoInfo => _ammoItemInfo;
     }
 }

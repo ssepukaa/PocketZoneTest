@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.InventoryObject.Abstract;
+using Assets.Scripts.InventoryObject.Data;
 using Assets.Scripts.Player;
 using Assets.Scripts.Player.Abstract;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace Assets.Scripts.Weapon {
     public class WeaponController : MonoBehaviour {
         private IPlayerController _c;
         private SpriteRenderer _spriteRenderer;
-        private IInventoryItemInfo _itemInfo;
+        public InventoryItemInfo _itemInfo;
         private Muzzle _muzzle;
 
         private void Start() {
@@ -21,7 +22,7 @@ namespace Assets.Scripts.Weapon {
 
         public void UpdateWeapon(IInventoryItemInfo info) {
             _spriteRenderer.sprite = info.SpriteIcon;
-            _itemInfo = info;
+            _itemInfo = info as InventoryItemInfo;
         }
 
         public Transform GetMuzzleTransform() {
