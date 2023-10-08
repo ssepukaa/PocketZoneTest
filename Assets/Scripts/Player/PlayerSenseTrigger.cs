@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Assets.Scripts.Enemy;
+﻿using System.Collections.Generic;
 using Assets.Scripts.Enemy.Abstract;
-using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.Player.Abstract;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 
 namespace Assets.Scripts.Components {
@@ -38,6 +33,7 @@ namespace Assets.Scripts.Components {
         }
         public void Construct(IPlayerController controller) {
             _controller = controller;
+            _isInitController = true;
 
         }
 

@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Assets.Scripts.Enemy.Abstract;
+using Assets.Scripts.Player.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.Enemy.DataRes {
@@ -7,5 +9,6 @@ namespace Assets.Scripts.Enemy.DataRes {
     public class EnemyResourceData : ScriptableObject {
 
         public Sprite _spriteEnemy;
+        public IPlayerController Target;
     }
 }

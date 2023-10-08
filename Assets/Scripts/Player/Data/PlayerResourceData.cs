@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Enemy.Abstract;
+﻿using Assets.Scripts.Components;
+using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.Player.Abstract;
@@ -21,7 +22,7 @@ namespace Assets.Scripts.Player.Data {
 
         public WeaponController WeaponController;
         private IEnemyController _target;
-
+        public PlayerSenseTrigger SenseTrigger;
 
         public IEnemyController Target {
             get => _target;

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Enemy.Abstract;
+﻿using Assets.Scripts.Components;
+using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject;
 using Assets.Scripts.InventoryObject.Abstract;
@@ -20,8 +21,7 @@ namespace Assets.Scripts.Player {
             get => RD.Target;
             set => RD.Target = value;
         }
-
-
+        
         public void Construct(IGameController gameController, IUIController uiController) {
             RD.GameController = gameController;
             RD.UIController = uiController;
@@ -40,6 +40,8 @@ namespace Assets.Scripts.Player {
             RD.UIInventory.Construct(this);
             RD.PlayerLootTrigger = GetComponentInChildren<PlayerLootTrigger>();
             RD.PlayerLootTrigger.Construct(this);
+            RD.SenseTrigger = GetComponentInChildren<PlayerSenseTrigger>();
+            RD.SenseTrigger.Construct(this);
 
         }
 
@@ -73,6 +75,10 @@ namespace Assets.Scripts.Player {
 
         public void StartFire() {
             Debug.Log("Fire Start!");
+            if (RD.Target == null) {
+                Debug.Log("No Target!!");
+                return;
+            }
             if ((RD.Inventory.WeaponSlot==null || RD.Inventory.WeaponSlot.IsEmpty)) return;
             if(RD.Inventory.WeaponSlot.Item.Info.WeaponInfo == null) return;
             RD.Inventory.RemoveOneAmountItemInAmmoByType(this, RD.Inventory.WeaponSlot.Item.Info.WeaponInfo.AmmoType);
