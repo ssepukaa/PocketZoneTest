@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using Assets.Scripts.Enemy;
+using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.Infra.Game.Data;
@@ -58,11 +60,19 @@ namespace Assets.Scripts.Infra.Game {
                 case SceneNames.Game1:
                     _rd.Player = FindObjectOfType<PlayerController>();
                     _rd.Player.Construct(this, _rd.IUIController);
+                    _rd.Enemies = FindObjectsOfType<EnemyController>();
+                    ConstructEnemies();
                     break;
                 case SceneNames.Game2:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void ConstructEnemies() {
+            foreach (var enemy in _rd.Enemies) {
+                enemy.Construct(this);
             }
         }
 

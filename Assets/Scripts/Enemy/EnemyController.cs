@@ -26,11 +26,9 @@ namespace Assets.Scripts.Enemy {
             _spriteRenderer.sprite = RD._spriteEnemy;
             _senseTrigger = GetComponentInChildren<EnemySenseTrigger>();
             _senseTrigger.Construct(this);
+            
+            Debug.Log("Construct EnemyController OK!");
 
-        }
-
-        public void TargetPosition(Vector2 position, bool isTarget) {
-            throw new System.NotImplementedException();
         }
 
         public void TakeDamage(float ammoInfoDamage) {

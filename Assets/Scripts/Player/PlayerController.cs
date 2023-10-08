@@ -90,8 +90,6 @@ namespace Assets.Scripts.Player {
         }
 
         public Vector2 Position => transform.position;
-        public void TargetPosition(Vector2 position, bool isTarget) {
-            throw new System.NotImplementedException();
-        }
+      
     }
 }

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Infra.Boot;
+﻿using Assets.Scripts.Enemy.Abstract;
+using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.Player;
@@ -20,6 +21,7 @@ namespace Assets.Scripts.Infra.Game.Data {
         //[SerializeField] private GameItemsFactory _gameItemsFactory;
         [SerializeField] private GameObject _lootPrefab;
         [SerializeField] private GameObject _bulletPrefab;
+        public IEnemyController[] Enemies;
 
 
         public GameObject LootPrefab => _lootPrefab;

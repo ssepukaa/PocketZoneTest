@@ -17,11 +17,13 @@ namespace Assets.Scripts.Enemy {
         public void Construct(IEnemyController controller) {
             _controller = controller;
             _isInitController = true;
-
+            Debug.Log($"Init EnemyController OK! _controller != null: {_controller!=null}");
+            
         }
 
         public void Update() {
             if (!_isInitController) return;
+
             if (_controller.TargetEnemy != null) {
 
                 // Вычислите направление от оружия к противнику
@@ -47,7 +49,7 @@ namespace Assets.Scripts.Enemy {
         private void OnTriggerEnter2D(Collider2D other) {
             IPlayerController visitor = other.GetComponent<IPlayerController>();
             if (visitor != null) {
-                if (_controller.TargetEnemy == null) {
+                if(_controller.TargetEnemy == null) {
                     _controller.TargetEnemy = visitor;
                 }
             }
