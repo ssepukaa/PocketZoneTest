@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25f7c481188903f4aa58859b9d60782a, type: 3}
   m_Name: EnemyResourceData
   m_EditorClassIdentifier: 
-  _spriteEnemy: {fileID: 5945939484006371963, guid: eb12f7bfac0d77046905ee79ff5c9e44, type: 3}
+  SpriteEnemy: {fileID: 0}
+  _itemWeaponInfo: {fileID: 11400000, guid: 6334af0d0d33d654b818872d0104c2a7, type: 2}
+  _maxBaseHealth: 1000
+  LootInfo: {fileID: 11400000, guid: 75525f63c4718724b8113b8a81706af0, type: 2}

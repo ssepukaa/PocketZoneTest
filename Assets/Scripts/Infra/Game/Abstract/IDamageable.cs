@@ -1,5 +1,5 @@
 ﻿namespace Assets.Scripts.Infra.Game.Abstract {
     public interface IDamageable {
-       void TakeDamage(float ammoInfoDamage);
+       void TakeDamage(float damage);
     }
 }

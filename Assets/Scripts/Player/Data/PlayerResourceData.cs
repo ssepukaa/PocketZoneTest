@@ -1,11 +1,5 @@
-﻿using Assets.Scripts.Components;
-using Assets.Scripts.Enemy.Abstract;
-using Assets.Scripts.Infra.Game.Abstract;
-using Assets.Scripts.InventoryObject.Abstract;
-using Assets.Scripts.Player.Abstract;
+﻿using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.UI;
-using Assets.Scripts.UI.InventoryUI;
-using Assets.Scripts.Weapon;
 using UnityEngine;
 
 namespace Assets.Scripts.Player.Data {
@@ -13,20 +7,9 @@ namespace Assets.Scripts.Player.Data {
     public class PlayerResourceData : ScriptableObject {
         public IGameController GameController;
         public IUIController UIController;
-        public IInventory Inventory;
-        //public ItemsInfoDataBase inventoryInfosData;
-        public PlayerInputComp PlayerInput;
-        public UIInventory UIInventory;
+        public float MaxBaseHealth = 100f;
         public int CapacityInventory = 16;
-        public IPlayerLootTrigger PlayerLootTrigger;
 
-        public WeaponController WeaponController;
-        private IEnemyController _target;
-        public PlayerSenseTrigger SenseTrigger;
-
-        public IEnemyController Target {
-            get => _target;
-            set => _target = value;
-        }
+       
     }
 }

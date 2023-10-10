@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using Assets.Scripts.Enemy;
-using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.Infra.Game.Data;
@@ -19,7 +18,8 @@ namespace Assets.Scripts.Infra.Game {
 
         [SerializeField] private GameModelData _md;
         [SerializeField] private GameResourceData _rd;
-        
+        public Transform ControllerTransform => transform;
+
 
 
         void Awake() {
@@ -60,7 +60,8 @@ namespace Assets.Scripts.Infra.Game {
                 case SceneNames.Game1:
                     _rd.Player = FindObjectOfType<PlayerController>();
                     _rd.Player.Construct(this, _rd.IUIController);
-                    _rd.Enemies = FindObjectsOfType<EnemyController>();
+                    new EnemySpawner(this);
+                //    _rd._enemies = FindObjectsOfType<EnemyController>();
                     ConstructEnemies();
                     break;
                 case SceneNames.Game2:
@@ -81,7 +82,7 @@ namespace Assets.Scripts.Infra.Game {
             factory.CreateInventoryLootItem(sender, position, info, amount);
         }
 
-    public void CreateBullet(object sender, Transform transform, IInventoryItemInfo info, int amount) {
+        public void CreateBullet(object sender, Transform transform, IInventoryItemInfo info, int amount) {
             var factory = new GameItemsFactory(this);
             factory.CreateBullet(sender, transform,info, amount);
         }

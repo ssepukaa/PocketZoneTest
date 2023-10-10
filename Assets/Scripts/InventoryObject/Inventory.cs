@@ -105,6 +105,7 @@ namespace Assets.Scripts.InventoryObject {
                                                 && slot.Item != null
                                                 && slot.Item.Info != null
                                                 && slot.Item.Info.AmmoInfo != null
+                                                && slot.Item.Info.ItemType == InventoryItemType.Ammo
                                                 && slot.Item.Info.AmmoInfo.AmmoType == itemType);
         }
 
@@ -303,8 +304,10 @@ namespace Assets.Scripts.InventoryObject {
 
         public bool RemoveOneAmountItemInAmmoByType(object sender, ItemAmmoType ammoType) {
             IInventorySlot slot = GetAmmoSlotByType(ammoType);
-            if (slot == null || slot.IsEmpty) {
+            
+            if (slot == null || slot.IsEmpty || slot.Item.Info.FunctionalityType != ItemFunctionalityType.Ammo) {
                 OnInventoryStateChangedEvent?.Invoke(sender);
+                
                 return false;
             }
             slot.Item.State.Amount -= 1;
@@ -313,13 +316,14 @@ namespace Assets.Scripts.InventoryObject {
                 slot.Clear();
             }
             OnInventoryStateChangedEvent?.Invoke(sender);
+           
             return true;
         }
 
         public bool EquipItem(object sender) {
 
             if (_selectedSlot.IsEmpty || !_selectedSlot.IsSelect) {
-                Debug.Log("SelectedSlot Null!!!");
+                
                 DeselectSelectedSlot();
                 OnInventoryStateChangedEvent?.Invoke(sender);
                 return false;

@@ -14,8 +14,9 @@ namespace Assets.Scripts.Player {
             _input = GetComponent<PlayerInput>();
         }
 
-        public void Construct(PlayerController player) {
+        public bool Construct(PlayerController player) {
             _player = player;
+            return true;
         }
 
         private void OnMovement(InputValue value) {

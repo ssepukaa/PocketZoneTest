@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Player.Abstract;
+using Pathfinding;
 using UnityEngine;
 
 namespace Assets.Scripts.Enemy {
@@ -14,11 +15,11 @@ namespace Assets.Scripts.Enemy {
             _initialWeaponRotation = WeaponTransform.rotation;
             _initialWeaponScale = WeaponTransform.localScale;
         }
-        public void Construct(IEnemyController controller) {
+        public bool Construct(IEnemyController controller) {
             _controller = controller;
             _isInitController = true;
             Debug.Log($"Init EnemyController OK! _controller != null: {_controller!=null}");
-            
+            return true;
         }
 
         public void Update() {
@@ -51,6 +52,7 @@ namespace Assets.Scripts.Enemy {
             if (visitor != null) {
                 if(_controller.TargetEnemy == null) {
                     _controller.TargetEnemy = visitor;
+                   _controller.DestinationSetter.target = _controller.TargetEnemy.TransformPlayer;
                 }
             }
         }

@@ -30,8 +30,8 @@ namespace Assets.Scripts.UI.InventoryUI {
         }
         
         private void OnDestroy() {
-            _player.RD.Inventory.OnInventoryStateChangedEvent -= OnInventoryChanged;
-            _player.RD.Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemoved;
+            _player.Inventory.OnInventoryStateChangedEvent -= OnInventoryChanged;
+            _player.Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemoved;
             
 
         }
@@ -51,8 +51,8 @@ namespace Assets.Scripts.UI.InventoryUI {
             InitializeSlots();
             UpdateUI();
             
-            _player.RD.Inventory.OnInventoryStateChangedEvent += OnInventoryChanged;
-            _player.RD.Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemoved;
+            _player.Inventory.OnInventoryStateChangedEvent += OnInventoryChanged;
+            _player.Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemoved;
 
         }
 
@@ -74,7 +74,7 @@ namespace Assets.Scripts.UI.InventoryUI {
                 GameObject slotGO = Instantiate(slotPrefab, slotsContainer);
                 UIInventorySlot uiSlot = slotGO.GetComponent<UIInventorySlot>();
                 _uiSlots[i] = uiSlot;
-                _uiSlots[i].Construct(this, _player.RD.Inventory.GetSlotByIndex(i), i);
+                _uiSlots[i].Construct(this, _player.Inventory.GetSlotByIndex(i), i);
             }
 
 
@@ -82,12 +82,12 @@ namespace Assets.Scripts.UI.InventoryUI {
         }
 
         private void AddItems() {
-            Debug.Log($"UIInventory:   Player.RD.Inventory == null {_player.RD.Inventory == null}");
+            Debug.Log($"UIInventory:   Player.RD.Inventory == null {_player.Inventory == null}");
 
-            _player.RD.Inventory.TryAddToSlot(this, _player.RD.Inventory.GetSlotByIndex(0), item1);
-            _player.RD.Inventory.TryAddToSlot(this, _player.RD.Inventory.GetSlotByIndex(1), item2);
-            _player.RD.Inventory.TryAddToSlot(this, _player.RD.Inventory.GetSlotByIndex(2), item3);
-            _player.RD.Inventory.TryAddToSlot(this, _player.RD.Inventory.GetSlotByIndex(3), item4);
+            _player.Inventory.TryAddToSlot(this, _player.Inventory.GetSlotByIndex(0), item1);
+            _player.Inventory.TryAddToSlot(this, _player.Inventory.GetSlotByIndex(1), item2);
+            _player.Inventory.TryAddToSlot(this, _player.Inventory.GetSlotByIndex(2), item3);
+            _player.Inventory.TryAddToSlot(this, _player.Inventory.GetSlotByIndex(3), item4);
         }
 
         public void UpdateUI() {
@@ -95,7 +95,7 @@ namespace Assets.Scripts.UI.InventoryUI {
                 uiSlot.Refresh();
                 
             }
-            _inventoryWindow.UpdateUI(_player.RD.Inventory.GetSelectedSlot());
+            _inventoryWindow.UpdateUI(_player.Inventory.GetSelectedSlot());
         }
 
         private void OnInventoryChanged(object sender) {
@@ -105,18 +105,18 @@ namespace Assets.Scripts.UI.InventoryUI {
         }
         
         public void OnSlotButton(IInventorySlot slot) {
-            _player.RD.Inventory.ButtonSlotSelected(slot);
+            _player.Inventory.ButtonSlotSelected(slot);
             UpdateUI();
 
         }
 
         public void OnDropItemButton() {
-            _player.RD.Inventory.RemoveOneAmountItemInSelectedSlotDropped(this);
+            _player.Inventory.RemoveOneAmountItemInSelectedSlotDropped(this);
             UpdateUI();
         }
 
         public void OnEquipItemButton() {
-            _player.RD.Inventory.EquipItem(this);
+            _player.Inventory.EquipItem(this);
         }
     }
 }

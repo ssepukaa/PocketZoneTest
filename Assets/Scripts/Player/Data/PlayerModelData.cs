@@ -6,7 +6,11 @@ using UnityEngine;
 namespace Assets.Scripts.Player.Data {
     [Serializable]
     public class PlayerModelData : MonoBehaviour {
-        //public GameStateTypes gameState;
-        
+        [SerializeField] private float _currentHealth;
+
+        public float CurrentHealth {
+            get => _currentHealth;
+            set => _currentHealth = value;
+        }
     }
 }

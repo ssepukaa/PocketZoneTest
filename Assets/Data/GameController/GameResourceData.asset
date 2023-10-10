@@ -15,3 +15,6 @@ MonoBehaviour:
   Bootstrapper: {fileID: 0}
   _lootPrefab: {fileID: 9121830706032711840, guid: 6820968aefdba3240bdff96e08e1bd18, type: 3}
   _bulletPrefab: {fileID: 9121830706032711840, guid: 9df1c9435ff257f4393ce4e4a3bfe961, type: 3}
+  _enemyPrefab: {fileID: 4059694832998136258, guid: 5f648ff0ed28ed74597c0d47c6c2db0d, type: 3}
+  _numberOfEnemies: 3
+  _spawnRadius: 15

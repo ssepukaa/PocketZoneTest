@@ -3,8 +3,7 @@ using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Player.Abstract;
 using UnityEngine;
 
-
-namespace Assets.Scripts.Components {
+namespace Assets.Scripts.Player {
 
 
     public class PlayerSenseTrigger : MonoBehaviour {
@@ -31,9 +30,10 @@ namespace Assets.Scripts.Components {
             
 
         }
-        public void Construct(IPlayerController controller) {
+        public bool Construct(IPlayerController controller) {
             _controller = controller;
             _isInitController = true;
+            return true;
 
         }
 

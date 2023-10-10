@@ -11,5 +11,10 @@ namespace Assets.Scripts.Player.Abstract {
         void StartFire();
         IEnemyController TargetEnemy { get; set; }
         Vector2 Position { get; }
+        Transform TransformPlayer { get; }
+        float CurrentHealth { get; set; }
+        float MaxHealth { get; }
+        void ApplyDamage(object sender, float damageAmount);
+        void Death();
     }
 }

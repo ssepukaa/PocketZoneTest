@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject.Data {
-    [CreateAssetMenu(fileName = "AmmoItemInfo", menuName = "PocketZoneTest/ItemInfo/Create New Ammo Info")]
+    [CreateAssetMenu(fileName = "AmmoItemInfo", menuName = "PocketZoneTest/Info/Create New Ammo Info")]
     public class AmmoItemInfo : ScriptableObject {
         public ItemAmmoType AmmoType { get; }
         [SerializeField] private ItemAmmoType _ammoType;

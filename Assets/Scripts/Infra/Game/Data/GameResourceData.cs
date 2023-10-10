@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Enemy.Abstract;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject.Abstract;
@@ -16,23 +17,29 @@ namespace Assets.Scripts.Infra.Game.Data {
         public GameMode GameMode;
         public GameState GameState;
         public IDamageSystem DamageSystem { get; set; }
-
-
-        //[SerializeField] private GameItemsFactory _gameItemsFactory;
-        [SerializeField] private GameObject _lootPrefab;
-        [SerializeField] private GameObject _bulletPrefab;
-        public IEnemyController[] Enemies;
-
-
-        public GameObject LootPrefab => _lootPrefab;
-        public GameObject BulletPrefab => _bulletPrefab;
-       // public IGameInventoryItemsFactory InventoryItemsFactory => _gameItemsFactory;
+        private List<IEnemyController> _enemies = new List<IEnemyController>();
         
         public IPlayerController Player {
             get => _player;
             set => _player = value;
         }
-        //  public IDamageSystem DamageSystem  => DamageSystem;
-            
+
+        public GameObject LootPrefab => _lootPrefab;
+        public GameObject BulletPrefab => _bulletPrefab;
+        public GameObject EnemyPrefab => _enemyPrefab;
+        public int NumberOfEnemies => _numberOfEnemies;
+        public float SpawnRadius => _spawnRadius;
+
+        public List<IEnemyController> Enemies {
+            get => _enemies;
+            set => _enemies = value;
+        }
+
+        [SerializeField] private GameObject _lootPrefab;
+        [SerializeField] private GameObject _bulletPrefab;
+        [SerializeField] private GameObject _enemyPrefab; // Префаб вашего врага
+        [SerializeField] private int _numberOfEnemies = 3; // Количество врагов для спавна
+        [SerializeField] private float _spawnRadius = 15f; // Радиус вокруг центра, где могут появляться враги
+
     }
 }

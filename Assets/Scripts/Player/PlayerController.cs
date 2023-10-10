@@ -12,37 +12,55 @@ using UnityEngine;
 
 namespace Assets.Scripts.Player {
     public class PlayerController : MonoBehaviour, IPlayerController, IShooter, IController {
-      
+        public IEnemyController TargetEnemy { get; set; }
 
         public PlayerResourceData RD;
         public PlayerModelData MD;
+        public PlayerInputComp PlayerInput { get; set; }
+        public UIInventory UIInventory { get; set; }
+        public IPlayerLootTrigger LootTrigger { get; set; }
 
-        public IEnemyController TargetEnemy {
-            get => RD.Target;
-            set => RD.Target = value;
+        public WeaponController WeaponController { get; set; }
+        public PlayerSenseTrigger SenseTrigger { get; set; }
+        public PlayerHealthSystem HealthSystem { get; set; }
+
+        public Vector2 Position => transform.position;
+
+        public Transform TransformPlayer => this.transform;
+
+        public float MaxHealth => RD.MaxBaseHealth;
+
+        public float CurrentHealth {
+            get => MD.CurrentHealth;
+            set => MD.CurrentHealth = value;
         }
-        
+        public IInventory Inventory { get; set; }
+        public UIHealthBar UiHealthBar { get; private set; }
         public void Construct(IGameController gameController, IUIController uiController) {
             RD.GameController = gameController;
             RD.UIController = uiController;
-            
-            RD.PlayerInput = GetComponent<PlayerInputComp>();
-            RD.WeaponController = GetComponentInChildren<WeaponController>();
-            RD.WeaponController.Construct(this);
-            RD.Inventory = new Inventory(RD.CapacityInventory);
-            RD.Inventory.OnOneItemInSelectedSlotDroppedEvent += OnInventoryOneItemInSelectedSlotRemoved;
-            RD.Inventory.OnRemoveOneAmountItemInSelectedSlotEquippedEvent += InventoryOnOnRemoveOneAmountItemInSelectedSlotEquipped;
-            RD.Inventory.OnOneItemAmmoRemovedEvent += OnOneItemAmmoRemovedEvent;
-            RD.PlayerInput = GetComponent<PlayerInputComp>();
-            RD.PlayerInput.Construct(this);
-            RD.UIController.SetInventory(RD.Inventory);
-            RD.UIInventory = FindObjectOfType<UIInventory>();
-            RD.UIInventory.Construct(this);
-            RD.PlayerLootTrigger = GetComponentInChildren<PlayerLootTrigger>();
-            RD.PlayerLootTrigger.Construct(this);
-            RD.SenseTrigger = GetComponentInChildren<PlayerSenseTrigger>();
-            RD.SenseTrigger.Construct(this);
 
+            PlayerInput = GetComponent<PlayerInputComp>();
+            WeaponController = GetComponentInChildren<WeaponController>();
+            WeaponController.Construct(this);
+            Inventory = new Inventory(RD.CapacityInventory);
+            Inventory.OnOneItemInSelectedSlotDroppedEvent += OnInventoryOneItemInSelectedSlotRemoved;
+            Inventory.OnRemoveOneAmountItemInSelectedSlotEquippedEvent += InventoryOnOnRemoveOneAmountItemInSelectedSlotEquipped;
+            Inventory.OnOneItemAmmoRemovedEvent += OnOneItemAmmoRemovedEvent;
+            PlayerInput = GetComponent<PlayerInputComp>();
+            PlayerInput.Construct(this);
+            RD.UIController.SetInventory(Inventory);
+            UIInventory = FindObjectOfType<UIInventory>();
+            UIInventory.Construct(this);
+            HealthSystem = new PlayerHealthSystem(this);
+            LootTrigger = GetComponentInChildren<PlayerLootTrigger>();
+            LootTrigger.Construct(this);
+            SenseTrigger = GetComponentInChildren<PlayerSenseTrigger>();
+            SenseTrigger.Construct(this);
+            UiHealthBar = GetComponentInChildren<UIHealthBar>();
+            UiHealthBar.Construct(HealthSystem);
+            HealthSystem.Refresh();
+            Debug.Log("Construct PlayerController OK!");
         }
 
         private void InventoryOnOnRemoveOneAmountItemInSelectedSlotEquipped(object sender, IInventoryItemInfo info, int amount) {
@@ -50,7 +68,7 @@ namespace Assets.Scripts.Player {
         }
 
         private void UpdateWeapon(IInventoryItemInfo info) {
-            RD.WeaponController.UpdateWeapon(info);
+            WeaponController.UpdateWeapon(info);
         }
 
         private void OnInventoryOneItemInSelectedSlotRemoved(object obj, IInventoryItemInfo itemInfo, int amount) {
@@ -59,37 +77,42 @@ namespace Assets.Scripts.Player {
         }
 
         public bool CollectLoot(object sender, IInventoryItem item) {
-            RD.Inventory.TryToAdd(sender, item);
+            Inventory.TryToAdd(sender, item);
             return true;
         }
 
 
         public void OpenInventory() {
-           RD.UIController.ShowWindow(UIWindowsType.Inventory);
+            RD.UIController.ShowWindow(UIWindowsType.Inventory);
         }
 
         private void OnOneItemAmmoRemovedEvent(object sender, IInventoryItem item, int amount) {
             Debug.Log("Fire Continue!");
-            RD.GameController.CreateBullet(this, RD.WeaponController.GetMuzzleTransform(), item.Info, amount);
+            RD.GameController.CreateBullet(this, WeaponController.GetMuzzleTransform(), item.Info, amount);
         }
 
         public void StartFire() {
             Debug.Log("Fire Start!");
-            if (RD.Target == null) {
+            if (TargetEnemy == null) {
                 Debug.Log("No Target!!");
                 return;
             }
-            if ((RD.Inventory.WeaponSlot==null || RD.Inventory.WeaponSlot.IsEmpty)) return;
-            if(RD.Inventory.WeaponSlot.Item.Info.WeaponInfo == null) return;
-            RD.Inventory.RemoveOneAmountItemInAmmoByType(this, RD.Inventory.WeaponSlot.Item.Info.WeaponInfo.AmmoType);
+            if ((Inventory.WeaponSlot==null || Inventory.WeaponSlot.IsEmpty)) return;
+            if (Inventory.WeaponSlot.Item.Info.WeaponInfo == null) return;
+            Inventory.RemoveOneAmountItemInAmmoByType(this, Inventory.WeaponSlot.Item.Info.WeaponInfo.AmmoType);
         }
 
         private void OnDestroy() {
-            RD.Inventory.OnOneItemInSelectedSlotDroppedEvent -= OnInventoryOneItemInSelectedSlotRemoved;
-            RD.Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemovedEvent;
+            Inventory.OnOneItemInSelectedSlotDroppedEvent -= OnInventoryOneItemInSelectedSlotRemoved;
+            Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemovedEvent;
         }
 
-        public Vector2 Position => transform.position;
-      
+        public void ApplyDamage(object sender, float damageAmount) {
+            HealthSystem.ApplyDamage(damageAmount);
+        }
+
+        public void Death() {
+            Destroy(gameObject);
+        }
     }
 }

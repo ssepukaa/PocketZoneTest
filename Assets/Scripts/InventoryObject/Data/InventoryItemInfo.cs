@@ -3,12 +3,13 @@ using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject.Data {
 
-    public enum InventoryItemType { Empty, Ammo, Rifle, Pistol, }
-    public enum ItemFunctionalityType{None, Ammo, Weapon,}
+    public enum InventoryItemType { Empty, Ammo, Rifle, Pistol, Claws, Coin,}
+    public enum ItemFunctionalityType{None, Ammo, Weapon, Currency, }
     public enum ItemIsEquippableType{NotEquippable,Equippable,}
     public enum ItemAmmoType {None, RifleAmmo, PistolAmmo, }
+    public enum WeaponType{None, Melee, Range}
 
-    [CreateAssetMenu(fileName = "InventoryItemInfo", menuName = "PocketZoneTest/ItemInfo/Create New Item Info")]
+    [CreateAssetMenu(fileName = "InventoryItemInfo", menuName = "PocketZoneTest/Info/Create New Item Info")]
     public class InventoryItemInfo : ScriptableObject, IInventoryItemInfo {
         
         
