@@ -8,16 +8,13 @@ namespace Assets.Scripts.Player {
 
     public class PlayerSenseTrigger : MonoBehaviour {
 
-        private CircleCollider2D _trigger;
-        private float _radiusTrigger;
-        private IPlayerController _controller;
-        
+        IPlayerController _controller;
+        float _radiusTrigger;
         public Transform WeaponTransform;
-
-        private Quaternion _initialWeaponRotation;
-        private Vector3 _initialWeaponScale;
-        private bool _isInitController;
-       
+        bool _isInitController;
+        CircleCollider2D _trigger;
+        Quaternion _initialWeaponRotation;
+        Vector3 _initialWeaponScale;
 
 
         private bool _isCheck = true;
@@ -27,7 +24,7 @@ namespace Assets.Scripts.Player {
             _radiusTrigger = _trigger.radius;
             _initialWeaponRotation = WeaponTransform.rotation;
             _initialWeaponScale = WeaponTransform.localScale;
-            
+
 
         }
         public bool Construct(IPlayerController controller) {
@@ -38,7 +35,7 @@ namespace Assets.Scripts.Player {
         }
 
         private void Update() {
-            if(!_isInitController)return;
+            if (!_isInitController) return;
             if (_isCheck) {
                 LostTarget();
             }
@@ -61,7 +58,7 @@ namespace Assets.Scripts.Player {
             } else {
                 WeaponTransform.rotation = _initialWeaponRotation;
                 WeaponTransform.localScale = _initialWeaponScale;
-                
+
             }
         }
 
@@ -114,7 +111,7 @@ namespace Assets.Scripts.Player {
             }
 
             SetTarget(nearestVisitor);
-            
+
         }
 
 
@@ -122,7 +119,7 @@ namespace Assets.Scripts.Player {
             IEnemyController visitor = other.GetComponent<IEnemyController>();
             if (visitor != null && visitor == _controller.TargetEnemy) {
                 _controller.TargetEnemy = null;
-               _isCheck = true;
+                _isCheck = true;
             }
 
         }

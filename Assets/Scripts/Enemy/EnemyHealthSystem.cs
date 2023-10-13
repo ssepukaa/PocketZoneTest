@@ -5,7 +5,7 @@ using Assets.Scripts.Components;
 
 namespace Assets.Scripts.Enemy {
     public class EnemyHealthSystem: IHealth {
-        private IEnemyController _controller;
+        IEnemyController _controller;
         public event Action<float, float> OnHealthChangeEvent;
 
         public EnemyHealthSystem(IEnemyController controller) {

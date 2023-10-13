@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpriteEnemy: {fileID: 0}
   _itemWeaponInfo: {fileID: 11400000, guid: 6334af0d0d33d654b818872d0104c2a7, type: 2}
-  _maxBaseHealth: 1000
+  _maxBaseHealth: 100
   LootInfo: {fileID: 11400000, guid: 75525f63c4718724b8113b8a81706af0, type: 2}

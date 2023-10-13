@@ -13,14 +13,14 @@ namespace Assets.Scripts.Enemy.DataRes {
     public class EnemyResourceData : ScriptableObject {
 
         public Sprite SpriteEnemy;
-        [SerializeField] private InventoryItemInfo _itemWeaponInfo;
-       
-        [SerializeField] private float _maxBaseHealth = 100f;
 
         public InventoryItemInfo LootInfo;
 
         public float MaxBaseHealth => _maxBaseHealth;
 
         public InventoryItemInfo Info => _itemWeaponInfo;
+        [SerializeField] InventoryItemInfo _itemWeaponInfo;
+
+        [SerializeField] float _maxBaseHealth = 100f;
     }
 }

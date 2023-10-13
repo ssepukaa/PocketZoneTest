@@ -6,14 +6,13 @@ using UnityEngine;
 
 namespace Assets.Scripts.Enemy.Abstract {
     public interface IEnemyController {
-        public void Construct(IGameController  gameController);
-
-        Vector2 Position { get; }
         IPlayerController TargetEnemy { get; set; }
-        public AIDestinationSetter DestinationSetter { get; set; }
         IInventorySlot WeaponSlot { get;}
+        AIDestinationSetter DestinationSetter { get; set; }
+        Vector2 Position { get; }
         float CurrentHealth { get; set; }
         float MaxHealth { get; }
+        void Construct(IGameController  gameController);
         void Death();
     }
 }

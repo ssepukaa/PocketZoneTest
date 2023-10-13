@@ -1,33 +1,28 @@
 using System.Collections;
+using Assets.Scripts.Infra.Boot.Data;
 using Assets.Scripts.Infra.Game;
-using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Infra.Boot {
     public class Bootstrapper : MonoBehaviour, IBootstrapper {
-       private IGameController _gameController;
-       private IUIController _uiController;
-       private GameStateTypes _gameState;
-       [SerializeField]private GameObject prefGame;
-       [SerializeField]private GameObject prefUI;
+        public BootstrapperResData Data;
+        bool _isInitGameDone;
+        bool _isInitUIDone;
 
-       
-       private bool _isInitGameDone;
-       private bool _isInitUIDone;
-
-       void Awake() {
-           Application.targetFrameRate = 60;
-           DontDestroyOnLoad(this);
-       }
-
-       void Start() {
-           StartCoroutine(Initializing());
-
-       }
-        private IEnumerator Initializing() {
+        void Awake() {
+            Application.targetFrameRate = 60;
             
+            DontDestroyOnLoad(this);
+        }
+
+        void Start() {
+            StartCoroutine(Initializing());
+
+        }
+        private IEnumerator Initializing() {
+
             Debug.Log("Loading...");
 
             yield return StartCoroutine(CreateComponent());
@@ -40,24 +35,24 @@ namespace Assets.Scripts.Infra.Boot {
         }
 
         private IEnumerator CreateComponent() {
-            _gameController = Instantiate(prefGame).GetComponent<GameController>();
-            _uiController = Instantiate(prefUI).GetComponent<UIController>();
+            Data .GameController = Instantiate(Data.PrefabGameGameobject).GetComponent<GameController>();
+            Data.UiController = Instantiate(Data.PrefabUIGamobject).GetComponent<UIController>();
             yield return new WaitForSeconds(1f);
             Debug.Log("Create Game and UI");
 
         }
 
         private IEnumerator InitGame() {
-            
-            _gameController.Construct(this, _uiController);
+
+            Data.GameController.Construct(this, Data.UiController);
             while (!_isInitGameDone) {
                 yield return null;
             }
         }
 
         private IEnumerator InitUI() {
-           
-            _uiController.Construct(this, _gameController);
+
+            Data.UiController.Construct(this, Data.GameController);
             while (!_isInitUIDone) {
                 yield return null;
             }
@@ -83,12 +78,10 @@ namespace Assets.Scripts.Infra.Boot {
                 yield return null;
             }
 
-            _gameState = GameStateTypes.Menu;
-            _gameController.LoadSceneComplete(_gameState);
-            _uiController.LoadSceneComplete(_gameState);
+            Data.GameState = GameStateTypes.Menu;
+            Data.GameController.LoadSceneComplete(Data.GameState);
+            Data.UiController.LoadSceneComplete(Data.GameState);
             // Вызов события после загрузки сцены
         }
     }
-
-    public interface IBootstrapper { }
 }

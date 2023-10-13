@@ -4,9 +4,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.Player {
     class PlayerLootTrigger : MonoBehaviour, IPlayerLootTrigger {
-        private IPlayerController _c;
+        IPlayerController _c;
        
-
         public bool Construct(IPlayerController player) {
             _c = player;
             

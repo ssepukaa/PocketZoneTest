@@ -3,11 +3,10 @@ using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject {
     public class LootContainer : MonoBehaviour, ILootContainer {
-
-        private SpriteRenderer _renderer;
+        IInventoryItem _item;
+        SpriteRenderer _renderer;
         //private IInventorySlot _slot;
-        private IInventoryItem _item;
-       
+
 
         private void Awake() {
             _renderer = GetComponent<SpriteRenderer>();

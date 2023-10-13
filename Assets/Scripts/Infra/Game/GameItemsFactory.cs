@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace Assets.Scripts.Infra.Game {
     public class GameItemsFactory : IGameInventoryItemsFactory {
-        private IGameController _c;
-        private const float RADIUS = 2.5f;
-        private const int MAX_TRIES = 100;
+        IGameController _c;
+        const float RADIUS = 2.5f;
+        const int MAX_TRIES = 100;
         public GameItemsFactory(IGameController controller) {
             _c = controller;
         }
@@ -50,12 +50,14 @@ namespace Assets.Scripts.Infra.Game {
         }
 
         public void CreateBullet(object sender, Transform transform, IInventoryItemInfo itemInfo, int amount) {
+            Debug.Log("Create bullet begin");
             IPlayerController playerController = sender as IPlayerController;
+            Debug.Log($"Create bullet continue: playerController = null --- {playerController==null}");
             GameObject BulletGO = null;
             if (playerController != null) {
                 BulletGO = Object.Instantiate(_c.RD.BulletPrefab, transform.position, transform.rotation);
-            }
-            else {
+                Debug.Log("Create bullet OK!");
+            } else {
                 return;
             }
 

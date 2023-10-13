@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13ee7ee18a421d48900a140efd22990, type: 3}
+  m_Name: BootstrapperResourceData
+  m_EditorClassIdentifier: 
+  IsInitGameDone: 0
+  IsInitUIDone: 0
+  _gameState: 0
+  prefGame: {fileID: 1668003163385612974, guid: 915b5940b8822d24993120c52d4f08c4, type: 3}
+  prefUI: {fileID: 7633827031291260238, guid: 9856734a6de280e418bd0d880e7b770a, type: 3}

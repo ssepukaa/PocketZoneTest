@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject {
     public class LootContainerHandle : MonoBehaviour, ILootContainer {
-
-        private SpriteRenderer _renderer;
-        private IInventorySlot _slot;
-        private IInventoryItem _item;
         public InventoryItemInfo ItemInfo;
         public int Amount;
+        SpriteRenderer _renderer;
+        IInventorySlot _slot;
+        IInventoryItem _item;
+
         void Start() {
             _renderer = GetComponent<SpriteRenderer>();
             _item = new InventoryItem(ItemInfo);

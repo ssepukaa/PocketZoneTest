@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.InventoryUI {
     public class UIInventoryItem : MonoBehaviour {
-        [SerializeField] private Image _imageIcon;
-        [SerializeField] private TMP_Text _textAmount;
-        private IInventoryItem _item;
-        
+        [SerializeField] Image _imageIcon;
+        [SerializeField] TMP_Text _textAmount;
+        IInventoryItem _item;
+
         public void Refresh(IInventorySlot slot) {
             if (slot.IsEmpty) {
                 Cleanup();

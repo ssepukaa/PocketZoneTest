@@ -2,43 +2,43 @@
 using Assets.Scripts.Infra.Game;
 using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject.Abstract;
+using Assets.Scripts.Player.Abstract;
 using Assets.Scripts.UI.Base;
 using Assets.Scripts.UI.Data;
+using Assets.Scripts.Weapon;
 using UnityEngine;
 
 namespace Assets.Scripts.UI {
-    public enum UIWindowsType { StartMenu, Inventory, HUD, 
+    public enum UIWindowsType {
+        StartMenu, Inventory, HUD,
     }
-    public enum UIPopupType{None,}
+    public enum UIPopupType { None, TaskComplete}
     public class UIController : MonoBehaviour, IUIController {
-        
-        private UIBaseWindows[] _uiWindows;
-        private UIBasePopups[] _uiPopups;
-        public UIModelData _md;
-        public UIResourceData _rd;
-        
+        public UIResData Data;
+        public IWeaponController Weapon => GameController.RD.Player.Weapon;
+        public IPlayerController Player => GameController.RD.Player;
 
+        public IBootstrapper Bootstrapper { get => Data.Bootstrapper; set => Data.Bootstrapper = value; }
+
+        public IGameController GameController { get => Data.GameController; set => Data.GameController = value; }
+
+        [SerializeField] UIBaseWindows[] _uiWindows;
+        [SerializeField] UIBasePopups[] _uiPopups;
 
 
         void Awake() {
             DontDestroyOnLoad(this);
         }
 
-
-        public void Construct(Bootstrapper bootstrapper, IGameController gameController) {
-            _rd._bootstrapper = bootstrapper;
-            _rd._gameController = gameController;
-            _rd._bootstrapper.InitUIComplete();
+        public void Construct(IBootstrapper bootstrapper, IGameController gameController) {
+           
+            Bootstrapper = bootstrapper;
+            GameController = gameController;
+            Bootstrapper.InitUIComplete();
         }
-
-        public void SetInventory(IInventory inventory) {
-            _rd.Inventory = inventory;
-        }
-
-       
 
         public IInventory GetInventory() {
-            return _rd.Inventory;
+            return Player.Inventory;
         }
 
 
@@ -57,10 +57,14 @@ namespace Assets.Scripts.UI {
                     break;
                 case GameStateTypes.Menu:
                     ShowWindow(UIWindowsType.StartMenu);
-                    ShowPopup(UIPopupType.None);
+                    //ShowPopup(UIPopupType.None);
+                    ClosePopups();
+                    Debug.Log($"UIResData Data GameController == null: {Data.GameController==null}");
                     break;
                 case GameStateTypes.Game:
+                    ShowPopup(UIPopupType.None);
                     ShowWindow(UIWindowsType.HUD);
+                    ClosePopups();
                     break;
                 case GameStateTypes.Pause:
                     break;
@@ -68,7 +72,7 @@ namespace Assets.Scripts.UI {
                     Debug.Log("Нет варианта для Default");
                     break;
             }
-            
+
 
         }
 
@@ -84,19 +88,25 @@ namespace Assets.Scripts.UI {
         }
 
         public void ShowPopup(UIPopupType popupType) {
-            
+
             foreach (var popup in _uiPopups) {
                 if (popup.idUIPopupType == popupType) {
-                    if(popupType == UIPopupType.None) return;
-                    popup.gameObject.gameObject.SetActive(true);
+                    if (popupType == UIPopupType.None) return;
+                    popup.gameObject.SetActive(true);
                 }
             }
         }
-
+        public void ClosePopups() {
+            if( _uiPopups == null ) return;
+            foreach (var popup in _uiPopups) {
+                
+                    popup.gameObject.SetActive(false);
+               
+            }
+        }
         #region MenuScene
-
         public void PlayButtonInSceneMenu() {
-            _rd._gameController.PlayButtonInSceneMenu();
+            GameController.PlayButtonInSceneMenu(); 
         }
 
         #endregion
@@ -104,7 +114,7 @@ namespace Assets.Scripts.UI {
         #region GameScene
 
         public void OnFireButton() {
-            _rd._gameController.RD.Player.StartFire();
+            GameController.RD.Player.StartFire();
         }
 
         public void OnInventoryButton() {

@@ -1,15 +1,14 @@
 ﻿using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Player.Abstract;
-using Pathfinding;
 using UnityEngine;
 
 namespace Assets.Scripts.Enemy {
-    public class EnemySenseTrigger: MonoBehaviour {
-        private IEnemyController _controller;
+    public class EnemySenseTrigger : MonoBehaviour {
         public Transform WeaponTransform;
-        private Quaternion _initialWeaponRotation;
-        private Vector3 _initialWeaponScale;
-        private bool _isInitController;
+        IEnemyController _controller;
+        Quaternion _initialWeaponRotation;
+        Vector3 _initialWeaponScale;
+        bool _isInitController;
 
         private void Start() {
             _initialWeaponRotation = WeaponTransform.rotation;
@@ -50,12 +49,12 @@ namespace Assets.Scripts.Enemy {
         private void OnTriggerEnter2D(Collider2D other) {
             IPlayerController visitor = other.GetComponent<IPlayerController>();
             if (visitor != null) {
-                if(_controller.TargetEnemy == null) {
+                if (_controller.TargetEnemy == null) {
                     _controller.TargetEnemy = visitor;
-                   _controller.DestinationSetter.target = _controller.TargetEnemy.TransformPlayer;
+                    _controller.DestinationSetter.target = _controller.TargetEnemy.TransformPlayer;
                 }
             }
         }
-        
+
     }
 }

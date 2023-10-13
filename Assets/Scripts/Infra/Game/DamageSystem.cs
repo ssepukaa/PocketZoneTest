@@ -2,9 +2,10 @@
 
 namespace Assets.Scripts.Infra.Game {
     class DamageSystem : IDamageSystem {
-        private IGameController _c;
         public DamageSystem(IGameController controller) {
             _c = controller;
         }
+
+        IGameController _c;
     }
 }

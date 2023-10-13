@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80baadd8467f3624b84fc76f03b4bf01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _md: {fileID: 4750232930971990186, guid: b1405c9b42c1e0f4bac1a5c1d23a42e9, type: 3}
-  _rd: {fileID: 11400000, guid: 3cebecf6ba9b7ff4fa7972b546f8856b, type: 2}
+  Data: {fileID: 11400000, guid: 3cebecf6ba9b7ff4fa7972b546f8856b, type: 2}
+  _uiWindows: []
+  _uiPopups: []
 --- !u!114 &7850844342616524782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54,7 +55,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7633827031291260238}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 

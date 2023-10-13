@@ -12,28 +12,20 @@ using UnityEngine;
 namespace Assets.Scripts.Enemy {
     public class EnemyController : MonoBehaviour, IEnemyController, IController, IDamageable {
         public EnemyResourceData RD;
-        private IGameController _gameController;
-        private SpriteRenderer _spriteRenderer;
-        
-        private IPlayerController _target;
         public EnemyHealthSystem HealthSystem { get; private set; }
         private EnemySenseTrigger _senseTrigger;
-        private AIDestinationSetter _destinationSetter;
-        private EnemyBattleSystem _battleSystem;
         public UIHealthBar UiHealthBar { get; set; }
         public IInventorySlot WeaponSlot { get; set; }
         public float CurrentHealth { get; set; }
         public float MaxHealth => RD.MaxBaseHealth;
         public Vector2 Position => transform.position;
-        public IPlayerController TargetEnemy {
-            get => _target;
-            set => _target = value;
-        }
-
-        public AIDestinationSetter DestinationSetter {
-            get => _destinationSetter;
-            set => _destinationSetter = value;
-        }
+        public IPlayerController TargetEnemy { get => _target; set => _target = value; }
+        public AIDestinationSetter DestinationSetter { get => _destinationSetter; set => _destinationSetter = value; }
+        IGameController _gameController;
+        IPlayerController _target;
+        SpriteRenderer _spriteRenderer;
+        AIDestinationSetter _destinationSetter;
+        EnemyBattleSystem _battleSystem;
 
         public void Construct(IGameController gameController) {
             _gameController = gameController;
@@ -59,8 +51,6 @@ namespace Assets.Scripts.Enemy {
 
         public void TakeDamage(float damage) {
             HealthSystem.ApplyDamage(damage);
-
-
         }
 
         public void Death() {

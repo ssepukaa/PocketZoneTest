@@ -1,14 +1,13 @@
 ﻿using Assets.Scripts.Enemy.Abstract;
-using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts.Enemy {
     public class EnemyBattleSystem : MonoBehaviour {
 
-        private IEnemyController _controller;
-        private float _attackCooldown;
-        private bool _canAttack = true;
-        private bool _isInit;
+        IEnemyController _controller;
+        float _attackCooldown;
+        bool _canAttack = true;
+        bool _isInit;
 
         public bool Construct(IEnemyController controller) {
             _controller = controller;
@@ -19,7 +18,7 @@ namespace Assets.Scripts.Enemy {
 
 
         private void Update() {
-            if(!_isInit) { return;}
+            if (!_isInit) { return; }
             if (_controller.TargetEnemy == null) return;
 
             // Проверка расстояния до цели

@@ -1,16 +1,17 @@
 ﻿using System;
-using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Infra.Game;
-using UnityEngine;
+using Assets.Scripts.InventoryObject;
+using Assets.Scripts.InventoryObject.Abstract;
 
 namespace Assets.Scripts.Player.Data {
     [Serializable]
-    public class PlayerModelData : MonoBehaviour {
-        [SerializeField] private float _currentHealth;
-
-        public float CurrentHealth {
-            get => _currentHealth;
-            set => _currentHealth = value;
-        }
+    public class PlayerModelData {
+        public bool IsCompleteGame1;
+        public bool IsCompleteGame2;
+        public IInventorySlot[] _slots;
+        public IInventorySlot _clipSlot;
+        public IInventorySlot _weaponSlot;
+        public IInventory _inventory;
+        public readonly int BaseInventoryCapacity = 16;
     }
 }

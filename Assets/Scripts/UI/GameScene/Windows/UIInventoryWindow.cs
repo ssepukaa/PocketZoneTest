@@ -13,8 +13,8 @@ namespace Assets.Scripts.UI.GameScene.Windows {
         public TMP_Text DescriptionItemText;
         public Button DropItemButton;
         public Button EquipItemButton;
-        private UIInventory _inventory;
-        private IInventoryItemInfo _inventoryItemInfo;
+        UIInventory _inventory;
+        IInventoryItemInfo _inventoryItemInfo;
 
 
 
@@ -58,12 +58,11 @@ namespace Assets.Scripts.UI.GameScene.Windows {
                 _inventoryItemInfo = slot.Item.Info;
                 DescriptionItemText.text = _inventoryItemInfo.Description;
                 DropItemButton.gameObject.SetActive(true);
-                
+
 
                 if (slot.Item.Info.ItemEquippableType == ItemIsEquippableType.Equippable) {
                     EquipItemButton.gameObject.SetActive(true);
-                }
-                else {
+                } else {
                     EquipItemButton.gameObject.SetActive(false);
                 }
 

@@ -11,13 +11,13 @@ namespace Assets.Scripts.UI.InventoryUI {
         public Color defaultColor = Color.grey; // стандартный цвет
         private IInventorySlot _slot;
         private UIInventory _uiInventory;
-        
-        private Image slotImage; // ссылка на компонент Image
-        [SerializeField] private UIInventoryItem _uiInventoryItem;
+
+        Image slotImage; // ссылка на компонент Image
+        [SerializeField] UIInventoryItem _uiInventoryItem;
 
 
         private void Awake() {
-          
+
             slotImage = GetComponent<Image>(); // получаем компонент Image
             _uiInventoryItem = GetComponentInChildren<UIInventoryItem>();
         }
@@ -32,15 +32,14 @@ namespace Assets.Scripts.UI.InventoryUI {
         public void OnSlotButtonClicked() {
             if (_slot.Item == null) {
                 Debug.Log($"Click slot number{SlotIndex}. Slot empty!");
-            }
-            else {
+            } else {
                 Debug.Log($"Click slot number{SlotIndex}. Item in Slot === {_slot.Item.Info.Id}");
             }
             _uiInventory.OnSlotButton(_slot);
-            
+
         }
 
-        private void SelectToggle( bool isSelected) {
+        private void SelectToggle(bool isSelected) {
             switch (isSelected) {
                 case true:
                     //_isSelected = true;
@@ -51,7 +50,7 @@ namespace Assets.Scripts.UI.InventoryUI {
                     slotImage.color = defaultColor;
                     break;
             }
-            
+
         }
 
         // private void CheckEquippedItemImage() {
@@ -61,14 +60,14 @@ namespace Assets.Scripts.UI.InventoryUI {
         //
         //     }
         // }
-        
+
         public void Refresh() {
-            
-           // if (_slot != null) {
-                SelectToggle(_slot.IsSelect);
-                //CheckEquippedItemImage();
-                _uiInventoryItem.Refresh(_slot);
-           // }
+
+            // if (_slot != null) {
+            SelectToggle(_slot.IsSelect);
+            //CheckEquippedItemImage();
+            _uiInventoryItem.Refresh(_slot);
+            // }
         }
     }
 }

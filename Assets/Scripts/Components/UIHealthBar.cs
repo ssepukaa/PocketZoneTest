@@ -22,7 +22,7 @@ namespace Assets.Scripts.Components {
         }
 
         private void OnDestroy() {
-            _health.OnHealthChangeEvent -= UpdateHealthBar;
+           // _health.OnHealthChangeEvent -= UpdateHealthBar; 
         }
     }
 }

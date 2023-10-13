@@ -1,8 +1,10 @@
-﻿using Assets.Scripts.Components;
+﻿using System;
+using Assets.Scripts.Components;
 using Assets.Scripts.Enemy.Abstract;
+using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game.Abstract;
-using Assets.Scripts.InventoryObject;
 using Assets.Scripts.InventoryObject.Abstract;
+using Assets.Scripts.InventoryObject.Data;
 using Assets.Scripts.Player.Abstract;
 using Assets.Scripts.Player.Data;
 using Assets.Scripts.UI;
@@ -12,17 +14,29 @@ using UnityEngine;
 
 namespace Assets.Scripts.Player {
     public class PlayerController : MonoBehaviour, IPlayerController, IShooter, IController {
+        public event Action<int, int> OnMissionChangedEvent;
+
         public IEnemyController TargetEnemy { get; set; }
 
-        public PlayerResourceData RD;
-        public PlayerModelData MD;
-        public PlayerInputComp PlayerInput { get; set; }
-        public UIInventory UIInventory { get; set; }
         public IPlayerLootTrigger LootTrigger { get; set; }
 
+        public IInventory Inventory { get => MD._inventory; set => MD._inventory = value; }
+
+        public IGameController GameController => RD.GameController;
+
+        public IWeaponController Weapon => WeaponController;
+
+        public PlayerInputComp PlayerInput { get; set; }
+
+        public UIInventory UIInventory { get; set; }
+
         public WeaponController WeaponController { get; set; }
+
         public PlayerSenseTrigger SenseTrigger { get; set; }
+
         public PlayerHealthSystem HealthSystem { get; set; }
+
+        public UIHealthBar UiHealthBar { get; private set; }
 
         public Vector2 Position => transform.position;
 
@@ -30,45 +44,50 @@ namespace Assets.Scripts.Player {
 
         public float MaxHealth => RD.MaxBaseHealth;
 
-        public float CurrentHealth {
-            get => MD.CurrentHealth;
-            set => MD.CurrentHealth = value;
-        }
-        public IInventory Inventory { get; set; }
-        public UIHealthBar UiHealthBar { get; private set; }
-        public void Construct(IGameController gameController, IUIController uiController) {
+        public float CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
+
+        public PlayerResourceData RD;
+
+        public PlayerModelData MD;
+
+        [SerializeField] float _currentHealth; int _collectedCoins; int _countTargetCoins; InventoryItemType _itemTargetType;
+
+        public void Construct(IGameController gameController, IUIController uiController, PlayerModelData md) {
+
             RD.GameController = gameController;
             RD.UIController = uiController;
+            MD = md;
 
             PlayerInput = GetComponent<PlayerInputComp>();
-            WeaponController = GetComponentInChildren<WeaponController>();
-            WeaponController.Construct(this);
-            Inventory = new Inventory(RD.CapacityInventory);
             Inventory.OnOneItemInSelectedSlotDroppedEvent += OnInventoryOneItemInSelectedSlotRemoved;
             Inventory.OnRemoveOneAmountItemInSelectedSlotEquippedEvent += InventoryOnOnRemoveOneAmountItemInSelectedSlotEquipped;
-            Inventory.OnOneItemAmmoRemovedEvent += OnOneItemAmmoRemovedEvent;
             PlayerInput = GetComponent<PlayerInputComp>();
             PlayerInput.Construct(this);
-            RD.UIController.SetInventory(Inventory);
+            
             UIInventory = FindObjectOfType<UIInventory>();
             UIInventory.Construct(this);
             HealthSystem = new PlayerHealthSystem(this);
             LootTrigger = GetComponentInChildren<PlayerLootTrigger>();
             LootTrigger.Construct(this);
+            WeaponController = GetComponentInChildren<WeaponController>();
+            WeaponController.Construct(this);
             SenseTrigger = GetComponentInChildren<PlayerSenseTrigger>();
             SenseTrigger.Construct(this);
             UiHealthBar = GetComponentInChildren<UIHealthBar>();
             UiHealthBar.Construct(HealthSystem);
             HealthSystem.Refresh();
+           // GameController.GameMode.InitTaskPlayer(this);
             Debug.Log("Construct PlayerController OK!");
+            
         }
+
 
         private void InventoryOnOnRemoveOneAmountItemInSelectedSlotEquipped(object sender, IInventoryItemInfo info, int amount) {
             UpdateWeapon(info);
         }
 
         private void UpdateWeapon(IInventoryItemInfo info) {
-            WeaponController.UpdateWeapon(info);
+            WeaponController.UpdateWeapon();
         }
 
         private void OnInventoryOneItemInSelectedSlotRemoved(object obj, IInventoryItemInfo itemInfo, int amount) {
@@ -77,8 +96,27 @@ namespace Assets.Scripts.Player {
         }
 
         public bool CollectLoot(object sender, IInventoryItem item) {
-            Inventory.TryToAdd(sender, item);
+            var takeCoin = Inventory.TryToAdd(sender, item);
+            if (item.ItemType == _itemTargetType && takeCoin) {
+                GameController.GameMode.CollectCoin(this);
+                Debug.Log("Collect coin!");
+                
+            }
             return true;
+        }
+
+        public void UpdateTask(int collectedCoins, int coinCountTarget, InventoryItemType itemType) {
+            _collectedCoins = collectedCoins;
+            _countTargetCoins = coinCountTarget;
+            _itemTargetType = itemType;
+            UpdateTaskUI();
+
+        }
+
+        public void UpdateTaskUI() {
+           
+            OnMissionChangedEvent?.Invoke(_collectedCoins, _countTargetCoins);
+
         }
 
 
@@ -86,25 +124,14 @@ namespace Assets.Scripts.Player {
             RD.UIController.ShowWindow(UIWindowsType.Inventory);
         }
 
-        private void OnOneItemAmmoRemovedEvent(object sender, IInventoryItem item, int amount) {
-            Debug.Log("Fire Continue!");
-            RD.GameController.CreateBullet(this, WeaponController.GetMuzzleTransform(), item.Info, amount);
-        }
-
         public void StartFire() {
-            Debug.Log("Fire Start!");
-            if (TargetEnemy == null) {
-                Debug.Log("No Target!!");
-                return;
-            }
-            if ((Inventory.WeaponSlot==null || Inventory.WeaponSlot.IsEmpty)) return;
-            if (Inventory.WeaponSlot.Item.Info.WeaponInfo == null) return;
-            Inventory.RemoveOneAmountItemInAmmoByType(this, Inventory.WeaponSlot.Item.Info.WeaponInfo.AmmoType);
+
+            WeaponController.StartFire();
         }
 
         private void OnDestroy() {
             Inventory.OnOneItemInSelectedSlotDroppedEvent -= OnInventoryOneItemInSelectedSlotRemoved;
-            Inventory.OnOneItemAmmoRemovedEvent -= OnOneItemAmmoRemovedEvent;
+
         }
 
         public void ApplyDamage(object sender, float damageAmount) {
@@ -113,6 +140,10 @@ namespace Assets.Scripts.Player {
 
         public void Death() {
             Destroy(gameObject);
+        }
+
+        public void SavePlayerData() {
+            BinarySerializationHelper.SerializeToFile<PlayerModelData>(MD);
         }
     }
 }

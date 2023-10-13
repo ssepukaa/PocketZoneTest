@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace Assets.Scripts.Infra.Game {
     public class EnemySpawner {
-        private IGameController _game;
-        
-        private GridGraph _grid;
+        IGameController _game;
+
+        GridGraph _grid;
 
         public EnemySpawner(IGameController game) {
             _game = game;
             Construct();
         }
-        public  void Construct() {
+        public void Construct() {
             _grid = AstarPath.active.data.gridGraph;
 
             for (int i = 0; i < _game.RD.NumberOfEnemies; i++) {

@@ -6,13 +6,14 @@ using UnityEngine;
 
 namespace Assets.Scripts.Infra.Game.Abstract {
     public interface IGameController {
-        public void Construct(Bootstrapper bootstrap, IUIController uiController);
-
+        IGameResourceData RD { get; }
+        Transform ControllerTransform { get; }
+        IGameMode GameMode { get; set; }
+        void Construct(Bootstrapper bootstrap, IUIController uiController);
         void LoadSceneComplete(GameStateTypes gameState);
         void PlayButtonInSceneMenu();
-        IGameResourceData RD { get; }
         void CreateLoot(object sender, Vector2 transformPosition, IInventoryItemInfo itemInfo, int amount);
         void CreateBullet(object sender,Transform transform, IInventoryItemInfo info, int amount);
-        Transform ControllerTransform { get; }
+        void TaskCompleted();
     }
 }

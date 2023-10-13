@@ -4,10 +4,9 @@ using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject {
     public class Bullet : MonoBehaviour, IBullet {
-        private SpriteRenderer _renderer;
-
-        private IInventoryItem _item;
         public float speed = 10f; // Скорость пули
+        IInventoryItem _item;
+        SpriteRenderer _renderer;
 
         private void Awake() {
             _renderer = GetComponentInChildren<SpriteRenderer>();
