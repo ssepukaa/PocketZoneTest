@@ -1,7 +1,9 @@
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Data;
+using System;
 
 namespace Assets.Scripts.InventoryObject {
+   
     public class InventoryItem: IInventoryItem{
         public IInventoryItemInfo Info => _info;
 

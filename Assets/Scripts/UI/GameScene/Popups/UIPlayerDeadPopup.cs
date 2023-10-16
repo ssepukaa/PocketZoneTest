@@ -1,10 +1,10 @@
-using Assets.Scripts.UI.Base;
+﻿using Assets.Scripts.UI.Base;
 using UnityEngine;
 
 namespace Assets.Scripts.UI.GameScene.Popups {
-    public class UITaskCompletePopup : UIBasePopups {
+    public class UIPlayerDeadPopup : UIBasePopups {
         private void Awake() {
-            idUIPopupType = UIPopupType.TaskComplete;
+            idUIPopupType = UIPopupType.PlayerDead;
         }
         private void OnEnable() {
             Time.timeScale = 0f;
@@ -13,10 +13,10 @@ namespace Assets.Scripts.UI.GameScene.Popups {
 
         private void OnDisable() {
             Time.timeScale = 1f;
-        
+            
         }
         public void OnCloseButton() {
-            _controller.Player.AfterMissionCompleteButton();
+            _controller.Player.AfterDeathButton();
 
         }
     }

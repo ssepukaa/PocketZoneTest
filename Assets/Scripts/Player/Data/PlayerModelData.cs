@@ -1,10 +1,8 @@
 ﻿using System;
-using Assets.Scripts.Infra.Game;
-using Assets.Scripts.InventoryObject;
 using Assets.Scripts.InventoryObject.Abstract;
 
 namespace Assets.Scripts.Player.Data {
-    [Serializable]
+    
     public class PlayerModelData {
         public bool IsCompleteGame1;
         public bool IsCompleteGame2;
@@ -12,6 +10,7 @@ namespace Assets.Scripts.Player.Data {
         public IInventorySlot _clipSlot;
         public IInventorySlot _weaponSlot;
         public IInventory _inventory;
+        public int InventoryCapacity = 16;
         public readonly int BaseInventoryCapacity = 16;
     }
 }

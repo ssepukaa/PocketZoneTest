@@ -19,17 +19,19 @@ namespace Assets.Scripts.Enemy {
         public float CurrentHealth { get; set; }
         public float MaxHealth => RD.MaxBaseHealth;
         public Vector2 Position => transform.position;
-        public IPlayerController TargetEnemy { get => _target; set => _target = value; }
-        public AIDestinationSetter DestinationSetter { get => _destinationSetter; set => _destinationSetter = value; }
+        public IPlayerController TargetEnemy { get; set; }
+
+        public AIDestinationSetter DestinationSetter { get; set; }
+
         IGameController _gameController;
-        IPlayerController _target;
         SpriteRenderer _spriteRenderer;
-        AIDestinationSetter _destinationSetter;
         EnemyBattleSystem _battleSystem;
+        
 
         public void Construct(IGameController gameController) {
+
             _gameController = gameController;
-            _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            _spriteRenderer = GetComponentInChildren<SpriteRenderer>(); 
             //_spriteRenderer.sprite = RD.SpriteEnemy;
             WeaponSlot = new InventorySlot();
             WeaponSlot.Item = new InventoryItem(RD.Info);
@@ -41,12 +43,12 @@ namespace Assets.Scripts.Enemy {
             _battleSystem.Construct(this);
             _senseTrigger = GetComponentInChildren<EnemySenseTrigger>();
             _senseTrigger.Construct(this);
-            _destinationSetter = GetComponent<AIDestinationSetter>();
+            DestinationSetter = GetComponent<AIDestinationSetter>();
             UiHealthBar = GetComponentInChildren<UIHealthBar>();
             UiHealthBar.Construct(HealthSystem);
             HealthSystem.Refresh();
             Debug.Log("Construct EnemyController OK!");
-
+           
         }
 
         public void TakeDamage(float damage) {

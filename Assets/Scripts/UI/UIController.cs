@@ -6,13 +6,14 @@ using Assets.Scripts.Player.Abstract;
 using Assets.Scripts.UI.Base;
 using Assets.Scripts.UI.Data;
 using Assets.Scripts.Weapon;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.UI {
     public enum UIWindowsType {
         StartMenu, Inventory, HUD,
     }
-    public enum UIPopupType { None, TaskComplete}
+    public enum UIPopupType { None, TaskComplete, NoAmmo, Reloading, PlayerDead}
     public class UIController : MonoBehaviour, IUIController {
         public UIResData Data;
         public IWeaponController Weapon => GameController.RD.Player.Weapon;
@@ -21,6 +22,7 @@ namespace Assets.Scripts.UI {
         public IBootstrapper Bootstrapper { get => Data.Bootstrapper; set => Data.Bootstrapper = value; }
 
         public IGameController GameController { get => Data.GameController; set => Data.GameController = value; }
+        Queue<UIBasePopups> _popupQueue ;
 
         [SerializeField] UIBaseWindows[] _uiWindows;
         [SerializeField] UIBasePopups[] _uiPopups;
@@ -43,7 +45,9 @@ namespace Assets.Scripts.UI {
 
 
         public void LoadSceneComplete(GameStateTypes gameState) {
+            _popupQueue = new Queue<UIBasePopups>();
             _uiWindows = FindObjectsOfType<UIBaseWindows>();
+
             foreach (var item in _uiWindows) {
                 item.Construct(this);
             }
@@ -88,14 +92,35 @@ namespace Assets.Scripts.UI {
         }
 
         public void ShowPopup(UIPopupType popupType) {
-
             foreach (var popup in _uiPopups) {
                 if (popup.idUIPopupType == popupType) {
                     if (popupType == UIPopupType.None) return;
-                    popup.gameObject.SetActive(true);
+
+                    // Если очередь пуста или первый в очереди попап уже активен, показываем окно сразу
+                    if (_popupQueue.Count == 0) {
+                        popup.gameObject.SetActive(true);
+                    }
+
+                    // Добавляем окно в очередь, если его там еще нет
+                    if (!_popupQueue.Contains(popup)) {
+                        _popupQueue.Enqueue(popup);
+                    }
                 }
             }
         }
+        public void HandlePopupAfterHide(UIBasePopups popup) {
+            // Удаляем окно из очереди
+            if (_popupQueue.Contains(popup)) {
+                _popupQueue.Dequeue();
+            }
+
+            // Если в очереди есть еще окна, показываем следующее
+            if (_popupQueue.Count > 0) {
+                _popupQueue.Peek().gameObject.SetActive(true);
+            }
+        }
+
+
         public void ClosePopups() {
             if( _uiPopups == null ) return;
             foreach (var popup in _uiPopups) {

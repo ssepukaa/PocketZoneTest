@@ -2,6 +2,7 @@
 using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game.Abstract;
+using Assets.Scripts.InventoryObject.Data;
 using Assets.Scripts.Player.Abstract;
 using Assets.Scripts.Player.Data;
 using Assets.Scripts.UI;
@@ -17,6 +18,7 @@ namespace Assets.Scripts.Infra.Game.Data {
         IPlayerController Player { get; set; }
         IDamageSystem DamageSystem { get; set; }
         PlayerModelData MdPlayer { get; set; }
+        ItemsInfoDataBase ItemsDatabase { get; }
         GameObject LootPrefab { get; }
         GameObject BulletPrefab { get; }
         GameObject EnemyPrefab { get; }

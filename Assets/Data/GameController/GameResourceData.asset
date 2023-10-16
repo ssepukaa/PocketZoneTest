@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beca636f11d245c46810305113db4b29, type: 3}
   m_Name: GameResourceData
   m_EditorClassIdentifier: 
-  Bootstrapper: {fileID: 0}
+  _itemsDatabase: {fileID: 11400000, guid: b2934d7d5f834644a8c68a0fb1b8d34c, type: 2}
   _lootPrefab: {fileID: 9121830706032711840, guid: 6820968aefdba3240bdff96e08e1bd18, type: 3}
   _bulletPrefab: {fileID: 9121830706032711840, guid: 9df1c9435ff257f4393ce4e4a3bfe961, type: 3}
   _enemyPrefab: {fileID: 4059694832998136258, guid: 5f648ff0ed28ed74597c0d47c6c2db0d, type: 3}

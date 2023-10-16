@@ -2,12 +2,14 @@
 using Assets.Scripts.Components;
 using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Infra.Boot;
+using Assets.Scripts.Infra.Game;
 using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Data;
 using Assets.Scripts.Player.Abstract;
 using Assets.Scripts.Player.Data;
 using Assets.Scripts.UI;
+using Assets.Scripts.UI.GameScene.Popups;
 using Assets.Scripts.UI.InventoryUI;
 using Assets.Scripts.Weapon;
 using UnityEngine;
@@ -59,8 +61,9 @@ namespace Assets.Scripts.Player {
             MD = md;
 
             PlayerInput = GetComponent<PlayerInputComp>();
+            Debug.Log($"Inventory == null : {Inventory == null}");
             Inventory.OnOneItemInSelectedSlotDroppedEvent += OnInventoryOneItemInSelectedSlotRemoved;
-            Inventory.OnRemoveOneAmountItemInSelectedSlotEquippedEvent += InventoryOnOnRemoveOneAmountItemInSelectedSlotEquipped;
+            Inventory.OnRemoveOneAmountItemInSelectedSlotEquippedEvent +=   InventoryOnOnRemoveOneAmountItemInSelectedSlotEquipped;
             PlayerInput = GetComponent<PlayerInputComp>();
             PlayerInput.Construct(this);
             
@@ -69,14 +72,16 @@ namespace Assets.Scripts.Player {
             HealthSystem = new PlayerHealthSystem(this);
             LootTrigger = GetComponentInChildren<PlayerLootTrigger>();
             LootTrigger.Construct(this);
-            WeaponController = GetComponentInChildren<WeaponController>();
-            WeaponController.Construct(this);
+            
             SenseTrigger = GetComponentInChildren<PlayerSenseTrigger>();
             SenseTrigger.Construct(this);
             UiHealthBar = GetComponentInChildren<UIHealthBar>();
             UiHealthBar.Construct(HealthSystem);
             HealthSystem.Refresh();
-           // GameController.GameMode.InitTaskPlayer(this);
+            WeaponController = GetComponentInChildren<WeaponController>();
+            WeaponController.Construct(this);
+            
+            // GameController.GameMode.InitTaskPlayer(this);
             Debug.Log("Construct PlayerController OK!");
             
         }
@@ -95,14 +100,14 @@ namespace Assets.Scripts.Player {
             RD.GameController.CreateLoot(this, transform.position, itemInfo, amount);
         }
 
-        public bool CollectLoot(object sender, IInventoryItem item) {
-            var takeCoin = Inventory.TryToAdd(sender, item);
-            if (item.ItemType == _itemTargetType && takeCoin) {
+        public bool TryLootCollect(object sender, IInventoryItem item) {
+            var isTakenLoot = Inventory.TryToAdd(sender, item);
+            if (item.ItemType == _itemTargetType && isTakenLoot) {
                 GameController.GameMode.CollectCoin(this);
                 Debug.Log("Collect coin!");
                 
             }
-            return true;
+            return isTakenLoot;
         }
 
         public void UpdateTask(int collectedCoins, int coinCountTarget, InventoryItemType itemType) {
@@ -113,13 +118,30 @@ namespace Assets.Scripts.Player {
 
         }
 
+        public void Reload() {
+            
+            RD.UIController.ShowPopup(UIPopupType.Reloading);
+        }
+
+        public void NoAmmo() {
+            RD.UIController.ShowPopup(UIPopupType.NoAmmo);
+        }
+
+        public void AfterMissionCompleteButton() {
+            SavePlayerData();
+            RD.GameController.StartLoadSceneCoroutine(SceneNames.Menu, GameStateTypes.Menu);
+        }
+
+        public void AfterDeathButton() {
+            RD.GameController.StartLoadSceneCoroutine(SceneNames.Menu, GameStateTypes.Menu );
+        }
+
         public void UpdateTaskUI() {
            
             OnMissionChangedEvent?.Invoke(_collectedCoins, _countTargetCoins);
+            WeaponController.UpdateWeapon();
 
         }
-
-
         public void OpenInventory() {
             RD.UIController.ShowWindow(UIWindowsType.Inventory);
         }
@@ -133,17 +155,17 @@ namespace Assets.Scripts.Player {
             Inventory.OnOneItemInSelectedSlotDroppedEvent -= OnInventoryOneItemInSelectedSlotRemoved;
 
         }
-
         public void ApplyDamage(object sender, float damageAmount) {
             HealthSystem.ApplyDamage(damageAmount);
         }
-
         public void Death() {
-            Destroy(gameObject);
+            Debug.Log("Player Dead!!!!!!!!!!!!!");
+            RD.UIController.ShowPopup(UIPopupType.PlayerDead);
+            //Destroy(gameObject);
         }
 
         public void SavePlayerData() {
-            BinarySerializationHelper.SerializeToFile<PlayerModelData>(MD);
+            RD.GameController.SaveDataPlayer();
         }
     }
 }

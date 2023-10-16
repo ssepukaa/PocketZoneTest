@@ -1,7 +1,9 @@
 ﻿using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Data;
+using System;
 
 namespace Assets.Scripts.InventoryObject {
+    [Serializable]
     public class InventorySlot : IInventorySlot {
         public InventoryItemType ItemType => _isEmpty ? InventoryItemType.Empty : _item.ItemType;
         public bool IsSelect => _isSelect;

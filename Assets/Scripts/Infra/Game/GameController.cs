@@ -3,6 +3,7 @@ using System.Collections;
 using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.Infra.Game.Data;
+using Assets.Scripts.Infra.Game.SaveLoad;
 using Assets.Scripts.InventoryObject;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.Player;
@@ -16,12 +17,17 @@ namespace Assets.Scripts.Infra.Game {
 
     public class GameController : MonoBehaviour, IGameController {
         public IGameResourceData RD => _rd;
-        public IGameMode GameMode { get => RD.GameMode; set => RD.GameMode = value; }
+
+        public IGameMode GameMode {
+            get => RD.GameMode;
+            set => RD.GameMode = value;
+        }
+
         public Transform ControllerTransform => transform;
 
 
         [SerializeField] GameResourceData _rd;
-       
+
 
 
         void Awake() {
@@ -39,38 +45,42 @@ namespace Assets.Scripts.Infra.Game {
 
         }
 
-        private IEnumerator LoadSceneCoroutine(string sceneName, GameStateTypes gameState) {
-            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+        public IEnumerator LoadSceneCoroutine(SceneNames sceneName, GameStateTypes gameState) {
+            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName.ToString());
             while (!asyncOperation.isDone) {
                 // Здесь можно добавить индикатор загрузки, если нужно
                 yield return null;
             }
+
             // Вызов события после загрузки сцены
             LoadSceneComplete(gameState);
-            _rd.UIController.LoadSceneComplete(gameState);
+            RD.UIController.LoadSceneComplete(gameState);
 
         }
 
         public void LoadSceneComplete(GameStateTypes gameState) {
-            _rd.GameState.SetState(gameState);
+            RD.GameState.SetState(gameState);
             SceneNames sceneName = (SceneNames)Enum.Parse(typeof(SceneNames), SceneManager.GetActiveScene().name);
             switch (sceneName) {
                 case SceneNames.Boot:
                     break;
                 case SceneNames.Menu:
+                    RD.Player = null;
+                    RD.MdPlayer = null;
+                    
                     LoadPlayerData();
                     break;
                 case SceneNames.Game1:
                     ConstructPlayer();
 
                     ConstructEnemies();
-                    _rd.GameMode.ChangeState(sceneName);
+                    RD.GameMode.ChangeState(sceneName);
                     break;
                 case SceneNames.Game2:
                     ConstructPlayer();
 
                     ConstructEnemies();
-                    _rd.GameMode.ChangeState(sceneName);
+                    RD.GameMode.ChangeState(sceneName);
                     break;
                 default:
                     break;
@@ -78,26 +88,39 @@ namespace Assets.Scripts.Infra.Game {
         }
 
         public void LoadPlayerData() {
-            _rd.MdPlayer = BinarySerializationHelper.DeserializeFromFile<PlayerModelData>();
-            if (_rd.MdPlayer == null) {
-                // Если данных нет, инициализируйте новый экземпляр PlayerModelData
-                _rd.MdPlayer = new PlayerModelData();
-                _rd.MdPlayer._inventory = new Inventory(_rd.MdPlayer.BaseInventoryCapacity, _rd.MdPlayer);
-                _rd.MdPlayer._clipSlot = new InventorySlot();
-            }
 
+            RD.MdPlayer = SaveLoadManager.LoadPlayer(RD.ItemsDatabase);
+
+            if (RD.MdPlayer == null) {
+                Debug.Log("Load Player Data error, new PlayerData , new Inventory");
+                // Если данных нет, инициализируйте новый экземпляр PlayerModelData
+                RD.MdPlayer = new PlayerModelData();
+                
+                RD.MdPlayer._inventory = new Inventory(RD.MdPlayer.BaseInventoryCapacity, RD.MdPlayer);
+                //RD.MdPlayer._clipSlot = new InventorySlot();
+            }
+            else {
+                Debug.Log($"Load Player Data OK. Inventory!=null:" +
+                          $" {RD.MdPlayer._inventory!=null}. Loaded data succes!!!");
+            }
+            
+           
+        }
+
+        public void SaveDataPlayer() {
+            SaveLoadManager.SavePlayer(RD.MdPlayer, RD.ItemsDatabase);
         }
 
         private void ConstructPlayer() {
+            
             RD.Player = FindObjectOfType<PlayerController>();
-            RD.Player.Construct(this, RD.UIController, _rd.MdPlayer);
+            RD.Player.Construct(this, RD.UIController, RD.MdPlayer);
         }
 
         private void ConstructEnemies() {
-            new EnemySpawner(this);
-            foreach (var enemy in _rd.Enemies) {
-                enemy.Construct(this);
-            }
+            var spawner = new EnemySpawner(this);
+            
+
         }
 
         public void CreateLoot(object sender, Vector2 position, IInventoryItemInfo info, int amount) {
@@ -110,20 +133,23 @@ namespace Assets.Scripts.Infra.Game {
             factory.CreateBullet(sender, transform, info, amount);
         }
 
-        void Update() {
-
-        }
+        void Update() { }
 
         #region MenuScene
 
         public void PlayButtonInSceneMenu() {
-            StartCoroutine(LoadSceneCoroutine(SceneNames.Game1.ToString(), GameStateTypes.Game));
+            StartCoroutine(LoadSceneCoroutine(SceneNames.Game1, GameStateTypes.Game));
         }
 
         #endregion
 
         public void TaskCompleted() {
             // Добавить вызов окна победы 
+            RD.UIController.ShowPopup(UIPopupType.TaskComplete);
+        }
+
+        public void StartLoadSceneCoroutine(SceneNames nameScene, GameStateTypes stateType) {
+            StartCoroutine(LoadSceneCoroutine(nameScene, stateType));
         }
     }
 }

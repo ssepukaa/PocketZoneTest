@@ -17,7 +17,7 @@ namespace Assets.Scripts.Player.Abstract {
         IEnemyController TargetEnemy { get; set; }
         Vector2 Position { get; }
         Transform TransformPlayer { get; }
-        bool CollectLoot(object sender, IInventoryItem item);
+        bool TryLootCollect(object sender, IInventoryItem item);
         float CurrentHealth { get; set; }
         float MaxHealth { get; }
         void Construct(IGameController gameController, IUIController uiController, PlayerModelData modelData);
@@ -26,5 +26,9 @@ namespace Assets.Scripts.Player.Abstract {
         void Death();
         void UpdateTaskUI();
         void UpdateTask(int collectedCoins, int coinCountTarget, InventoryItemType itemType);
+        void Reload();
+        void NoAmmo();
+        void AfterMissionCompleteButton();
+        void AfterDeathButton();
     }
 }

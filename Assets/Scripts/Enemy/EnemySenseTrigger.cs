@@ -17,7 +17,6 @@ namespace Assets.Scripts.Enemy {
         public bool Construct(IEnemyController controller) {
             _controller = controller;
             _isInitController = true;
-            Debug.Log($"Init EnemyController OK! _controller != null: {_controller!=null}");
             return true;
         }
 
@@ -47,6 +46,8 @@ namespace Assets.Scripts.Enemy {
             }
         }
         private void OnTriggerEnter2D(Collider2D other) {
+            if (!_isInitController) return;
+
             IPlayerController visitor = other.GetComponent<IPlayerController>();
             if (visitor != null) {
                 if (_controller.TargetEnemy == null) {

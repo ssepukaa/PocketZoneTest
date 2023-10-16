@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Infra.Boot;
+﻿using System.Collections;
+using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game.Data;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.UI;
@@ -15,5 +16,7 @@ namespace Assets.Scripts.Infra.Game.Abstract {
         void CreateLoot(object sender, Vector2 transformPosition, IInventoryItemInfo itemInfo, int amount);
         void CreateBullet(object sender,Transform transform, IInventoryItemInfo info, int amount);
         void TaskCompleted();
+        void StartLoadSceneCoroutine(SceneNames nameScene, GameStateTypes stateType);
+        void SaveDataPlayer();
     }
 }

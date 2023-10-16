@@ -5,10 +5,10 @@ using UnityEngine;
 namespace Assets.Scripts.Player {
     class PlayerLootTrigger : MonoBehaviour, IPlayerLootTrigger {
         IPlayerController _c;
-       
+
         public bool Construct(IPlayerController player) {
             _c = player;
-            
+
             return true;
         }
 
@@ -17,7 +17,10 @@ namespace Assets.Scripts.Player {
             ILootContainer loot = other.GetComponent<ILootContainer>();
             if (loot != null) {
                 Debug.Log($"PlayerController not null init = {_c!= null}");
-                _c.CollectLoot(other, loot.CollectLoot()) ;
+                if (_c.TryLootCollect(other, loot.TryLootCollect())) {
+                    loot.LootCollected();
+                }
+
             }
         }
     }

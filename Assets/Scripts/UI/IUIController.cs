@@ -3,12 +3,14 @@ using Assets.Scripts.Infra.Game;
 using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.Player.Abstract;
+using Assets.Scripts.UI.Base;
 using Assets.Scripts.Weapon;
 
 namespace Assets.Scripts.UI {
     public interface IUIController {
         void Construct(IBootstrapper bootstrapper, IGameController gameController);
         void LoadSceneComplete(GameStateTypes gameState);
+        void HandlePopupAfterHide(UIBasePopups popup);
         void PlayButtonInSceneMenu();
         void ShowWindow(UIWindowsType windowType);
         void ShowPopup(UIPopupType popupType);

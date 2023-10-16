@@ -2,6 +2,7 @@
 using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Infra.Boot;
 using Assets.Scripts.Infra.Game.Abstract;
+using Assets.Scripts.InventoryObject.Data;
 using Assets.Scripts.Player.Abstract;
 using Assets.Scripts.Player.Data;
 using Assets.Scripts.UI;
@@ -30,8 +31,11 @@ namespace Assets.Scripts.Infra.Game.Data {
         IGameMode _gameMode;
         public PlayerModelData MdPlayer { get => _mdPlayer; set => _mdPlayer = value; }
 
+        public ItemsInfoDataBase ItemsDatabase => _itemsDatabase;
+
         [SerializeField] PlayerModelData _mdPlayer;
 
+        [SerializeField] ItemsInfoDataBase _itemsDatabase; /* получите базу данных предметов */
         [SerializeField] GameObject _lootPrefab;
         [SerializeField] GameObject _bulletPrefab;
         [SerializeField] GameObject _enemyPrefab; // Префаб вашего врага

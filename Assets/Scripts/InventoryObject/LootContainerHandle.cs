@@ -21,11 +21,15 @@ namespace Assets.Scripts.InventoryObject {
         }
 
         
-        public IInventoryItem CollectLoot() {
+        public IInventoryItem TryLootCollect() {
             var collectedItem = _item;
+            
+            return collectedItem;
+        }
+
+        public void LootCollected() {
             _item = null;
             Destroy(gameObject);
-            return collectedItem;
         }
     }
 }

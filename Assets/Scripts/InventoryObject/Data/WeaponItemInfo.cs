@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject.Data {
     [CreateAssetMenu(fileName = "WeaponItemInfo", menuName = "PocketZoneTest/Info/Create New Weapon Info")]
+    [Serializable]
     public class WeaponItemInfo : ScriptableObject {
         public ItemAmmoType AmmoType { get; }
         public int CapacityClip => _capacityClip;

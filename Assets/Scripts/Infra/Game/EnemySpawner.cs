@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Enemy.Abstract;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Infra.Game.Abstract;
 using Pathfinding;
 using UnityEngine;
@@ -14,20 +15,29 @@ namespace Assets.Scripts.Infra.Game {
             Construct();
         }
         public void Construct() {
-            _grid = AstarPath.active.data.gridGraph;
 
+            _grid = AstarPath.active.data.gridGraph;
+            _game.RD.Enemies.Clear();
             for (int i = 0; i < _game.RD.NumberOfEnemies; i++) {
+                Debug.Log($"Create enemy in cicle number {i}");
                 SpawnEnemyAtRandomPosition();
             }
+
+
+          
+
         }
 
         private void SpawnEnemyAtRandomPosition() {
             Vector3 randomPosition = GetRandomPositionOnGrid();
+            _game.RD.Enemies = new List<IEnemyController>();
 
             if (randomPosition != Vector3.zero) // Если позиция найдена
             {
                 var enemy = Object.Instantiate(_game.RD.EnemyPrefab, randomPosition, Quaternion.identity);
-                _game.RD.Enemies.Add(enemy.GetComponent<IEnemyController>());
+                var enemyController = enemy.GetComponent<IEnemyController>();
+                enemyController.Construct(_game);
+
             }
         }
 

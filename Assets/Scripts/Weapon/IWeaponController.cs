@@ -1,7 +1,11 @@
 ﻿using System;
+using Assets.Scripts.InventoryObject.Abstract;
+using Assets.Scripts.InventoryObject.Data;
 
 namespace Assets.Scripts.Weapon {
     public interface IWeaponController {
-        public event Action<int, int> OnFiredChangedEnvent;
+        event Action<int, int> OnFiredChangedEnvent;
+        float TimeReloading();
+
     }
 }

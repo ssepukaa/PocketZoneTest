@@ -20,7 +20,7 @@ namespace Assets.Scripts.UI.GameScene.Windows {
         public void FireButton() {
             _controller.OnFireButton();
         }
-
+        
         private void UpdateAmmoUI(int clipAmountAmmo, int totalAmountAmmo) {
             ClipAmountAmmoText.text = clipAmountAmmo.ToString();
             TotalAmountAmmoText.text = totalAmountAmmo.ToString();
@@ -44,6 +44,7 @@ namespace Assets.Scripts.UI.GameScene.Windows {
             if (_controller!=null && _controller.Weapon != null)
                 _controller.Weapon.OnFiredChangedEnvent -= UpdateAmmoUI;
             _controller.Player.OnMissionChangedEvent -= UpdateCoinsUI;
+            _controller.Player.UpdateTaskUI();
         }
 
     }

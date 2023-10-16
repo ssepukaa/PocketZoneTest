@@ -7,6 +7,7 @@ using Assets.Scripts.Player.Data;
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject {
+    [Serializable]
     public class Inventory : IInventory {
         public event Action<object, IInventoryItem, int> OnInventoryItemAddedEvent;
         public event Action<object, InventoryItemType, int> OnInventoryItemRemovedEvent;
@@ -29,22 +30,34 @@ namespace Assets.Scripts.InventoryObject {
         IInventorySlot _selectedSlot;
 
 
-        public Inventory(int capacity, PlayerModelData data) {
+        public Inventory(int capacity, PlayerModelData data, bool initializeSlots = true) {
             _data = data;
             Capacity = capacity;
-            InitializeSlots(capacity);
+            if (initializeSlots) {
+                InitializeSlots(capacity);
+            }
 
+            DeselectSelectedSlot();
+            UpdateWeapon();
+        }
+
+        private void UpdateWeapon() {
+            if (ClipSlot != null) {
+                OnAmmoChangedEvent?.Invoke();
+            }
         }
 
         private void InitializeSlots(int capacity) {
-            WeaponSlot = new InventorySlot();
-            _selectedSlot =new InventorySlot();
-            DeselectSelectedSlot();
-
             SlotsArray = new InventorySlot[capacity];
             for (int i = 0; i < capacity; i++) {
                 SlotsArray[i] = new InventorySlot();
             }
+            ClipSlot = new InventorySlot();
+            WeaponSlot = new InventorySlot();
+            //  _selectedSlot =new InventorySlot();
+
+
+
         }
 
         public void ButtonSlotSelected(IInventorySlot slot) {
@@ -101,34 +114,30 @@ namespace Assets.Scripts.InventoryObject {
 
         //Добавление предмета в инвентарь
         public bool TryToAdd(object sender, IInventoryItem item) {
-            while (item.State.Amount > 0) {
-                // Поиск всех слотов с тем же типом предмета, которые не полны
-                var suitableSlots = SlotsArray
-                    .Where(slot => (slot.IsEmpty || (slot.Item.ItemType == item.ItemType && slot.Item.Amount<= slot.Item.Info.MaxAmountSlot)))
-                    .ToList();
+            // Поиск всех слотов с тем же типом предмета, которые не полны
+            var suitableSlots = SlotsArray
+                .Where(slot => (slot.IsEmpty || (slot.Item.ItemType == item.ItemType && slot.Item.Amount <= slot.Item.Info.MaxAmountSlot)))
+                .ToList();
 
-                if (!suitableSlots.Any()) {
-                    Debug.Log("Нет места для предметов в инвентаре!!!");
-                    return false; // Если не найдено ни одного подходящего слота
-                }
-
-                bool itemAdded = false;
-
-                foreach (var slot in suitableSlots) {
-                    if (item.State.Amount <= 0) break; // Если весь предмет был добавлен
-                    if (TryAddToSlot(sender, slot, item)) {
-                        itemAdded = true;
-                    }
-                }
-
-                if (!itemAdded) {
-                    return false; // Если предмет не был добавлен ни в один из слотов
-                }
+            if (!suitableSlots.Any()) {
+                Debug.Log("Нет места для предметов в инвентаре!!!");
+                return false; // Если не найдено ни одного подходящего слота
             }
-            OnAmmoChangedEvent?.Invoke();
 
+            foreach (var slot in suitableSlots) {
+                if (item.State.Amount <= 0) break; // Если весь предмет был добавлен
+                TryAddToSlot(sender, slot, item);
+            }
+
+            if (item.State.Amount > 0) {
+                Debug.Log("Не удалось добавить весь предмет в инвентарь.");
+                return false; // Если предмет не был полностью добавлен
+            }
+
+            OnAmmoChangedEvent?.Invoke();
             return true;
         }
+
         //Добавление предмета уже в конкретный слот
         public bool TryAddToSlot(object sender, IInventorySlot slot, IInventoryItem item) {
             var amountToAdd = Math.Min(item.Info.MaxAmountSlot - slot.GetItemAmount, item.State.Amount);
