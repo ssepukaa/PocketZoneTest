@@ -44,3 +44,9 @@ TagManager:
   - name: Trash
     uniqueID: 2727232013
     locked: 0
+  - name: Weapon
+    uniqueID: 720333053
+    locked: 0
+  - name: Arm
+    uniqueID: 3429268713
+    locked: 0
