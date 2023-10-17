@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Infra.Boot;
-using Assets.Scripts.Infra.Game.Abstract;
+﻿using Assets.Scripts.Main.Boot;
+using Assets.Scripts.Main.Game.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.UI.Data {

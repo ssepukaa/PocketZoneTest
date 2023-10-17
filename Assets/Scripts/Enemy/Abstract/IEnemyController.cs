@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Infra.Game.Abstract;
-using Assets.Scripts.InventoryObject.Abstract;
+﻿using Assets.Scripts.InventoryObject.Abstract;
+using Assets.Scripts.Main.Game.Abstract;
 using Assets.Scripts.Player.Abstract;
 using Pathfinding;
 using UnityEngine;

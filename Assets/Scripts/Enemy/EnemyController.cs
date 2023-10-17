@@ -2,9 +2,9 @@
 using Assets.Scripts.Components;
 using Assets.Scripts.Enemy.Abstract;
 using Assets.Scripts.Enemy.DataRes;
-using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject;
 using Assets.Scripts.InventoryObject.Abstract;
+using Assets.Scripts.Main.Game.Abstract;
 using Assets.Scripts.Player.Abstract;
 using Pathfinding;
 using UnityEngine;

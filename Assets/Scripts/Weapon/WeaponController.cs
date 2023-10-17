@@ -56,8 +56,8 @@ namespace Assets.Scripts.Weapon {
                 // OnFiredChangedEnvent?.Invoke(Inventory.ClipSlot.Item.Amount, _c.Inventory.GetTotalAmmoByType
                 //     (_c.Inventory.ClipSlot.Item.Info.AmmoInfo.AmmoType));
             }
-            OnFiredChangedEnvent?.Invoke(Inventory.ClipSlot.Item.Amount, _c.Inventory.GetTotalAmmoByType
-                (_c.Inventory.ClipSlot.Item.Info.AmmoInfo.AmmoType));
+            OnFiredChangedEnvent?.Invoke(Inventory?.ClipSlot?.Item?.Amount ?? 0, _c.Inventory?.GetTotalAmmoByType
+                (_c.Inventory.ClipSlot?.Item?.Info?.AmmoInfo?.AmmoType ??  ItemAmmoType.None) ?? 0);
         }
 
         public Transform GetMuzzleTransform() {

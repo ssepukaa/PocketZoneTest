@@ -1,12 +1,12 @@
-﻿using Assets.Scripts.Infra.Boot;
-using Assets.Scripts.Infra.Game;
-using Assets.Scripts.Infra.Game.Abstract;
-using Assets.Scripts.InventoryObject.Abstract;
+﻿using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.Player.Abstract;
 using Assets.Scripts.UI.Base;
 using Assets.Scripts.UI.Data;
 using Assets.Scripts.Weapon;
 using System.Collections.Generic;
+using Assets.Scripts.Main.Boot;
+using Assets.Scripts.Main.Game;
+using Assets.Scripts.Main.Game.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.UI {
@@ -37,6 +37,11 @@ namespace Assets.Scripts.UI {
             Bootstrapper = bootstrapper;
             GameController = gameController;
             Bootstrapper.InitUIComplete();
+        }
+
+        public bool GetIsFirstLevelComplete() {
+            
+            return GameController.GetIsFirstLevelComplete();;
         }
 
         public IInventory GetInventory() {
@@ -130,8 +135,8 @@ namespace Assets.Scripts.UI {
             }
         }
         #region MenuScene
-        public void PlayButtonInSceneMenu() {
-            GameController.PlayButtonInSceneMenu(); 
+        public void PlayButtonInSceneMenu(SceneNames scene) {
+            GameController.PlayButtonInSceneMenu(scene); 
         }
 
         #endregion

@@ -1,8 +1,8 @@
 ﻿using System;
 using Assets.Scripts.Enemy.Abstract;
-using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Data;
+using Assets.Scripts.Main.Game.Abstract;
 using Assets.Scripts.Player.Data;
 using Assets.Scripts.UI;
 using Assets.Scripts.Weapon;
@@ -30,5 +30,6 @@ namespace Assets.Scripts.Player.Abstract {
         void NoAmmo();
         void AfterMissionCompleteButton();
         void AfterDeathButton();
+        bool GetIsFirstLevelComplete();
     }
 }

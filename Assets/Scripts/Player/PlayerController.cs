@@ -1,15 +1,13 @@
 ﻿using System;
 using Assets.Scripts.Components;
 using Assets.Scripts.Enemy.Abstract;
-using Assets.Scripts.Infra.Boot;
-using Assets.Scripts.Infra.Game;
-using Assets.Scripts.Infra.Game.Abstract;
 using Assets.Scripts.InventoryObject.Abstract;
 using Assets.Scripts.InventoryObject.Data;
+using Assets.Scripts.Main.Game;
+using Assets.Scripts.Main.Game.Abstract;
 using Assets.Scripts.Player.Abstract;
 using Assets.Scripts.Player.Data;
 using Assets.Scripts.UI;
-using Assets.Scripts.UI.GameScene.Popups;
 using Assets.Scripts.UI.InventoryUI;
 using Assets.Scripts.Weapon;
 using UnityEngine;
@@ -128,12 +126,17 @@ namespace Assets.Scripts.Player {
         }
 
         public void AfterMissionCompleteButton() {
+            MD.IsCompleteGame1 = true;
             SavePlayerData();
             RD.GameController.StartLoadSceneCoroutine(SceneNames.Menu, GameStateTypes.Menu);
         }
 
         public void AfterDeathButton() {
             RD.GameController.StartLoadSceneCoroutine(SceneNames.Menu, GameStateTypes.Menu );
+        }
+
+        public bool GetIsFirstLevelComplete() {
+            return MD.IsCompleteGame1;
         }
 
         public void UpdateTaskUI() {

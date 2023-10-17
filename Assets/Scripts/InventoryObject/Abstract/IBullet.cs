@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Infra.Game.Abstract;
+﻿using Assets.Scripts.Main.Game.Abstract;
 
 namespace Assets.Scripts.InventoryObject.Abstract {
     public interface IBullet {
