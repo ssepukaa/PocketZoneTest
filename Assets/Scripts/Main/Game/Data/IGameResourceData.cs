@@ -9,6 +9,7 @@ using Assets.Scripts.UI;
 using UnityEngine;
 
 namespace Assets.Scripts.Main.Game.Data {
+    // Хранение ссылок и ресурсов игры
     public interface IGameResourceData {
         List<IEnemyController> Enemies { get; set; }
         IGameMode GameMode { get; set; }
@@ -16,7 +17,7 @@ namespace Assets.Scripts.Main.Game.Data {
         IUIController UIController { get; set; }
         IGameState GameState { get; set; }
         IPlayerController Player { get; set; }
-        IDamageSystem DamageSystem { get; set; }
+       // IDamageSystem DamageSystem { get; set; }
         PlayerModelData MdPlayer { get; set; }
         ItemsInfoDataBase ItemsDatabase { get; }
         GameObject LootPrefab { get; }

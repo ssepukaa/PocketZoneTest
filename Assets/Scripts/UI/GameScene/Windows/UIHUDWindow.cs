@@ -2,6 +2,7 @@
 using TMPro;
 
 namespace Assets.Scripts.UI.GameScene.Windows {
+    // Реализация окна HUD
     public class UIHUDWindow : UIBaseWindows {
         public TMP_Text ClipAmountAmmoText;
         public TMP_Text TotalAmountAmmoText;

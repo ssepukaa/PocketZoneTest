@@ -5,6 +5,7 @@ using Assets.Scripts.Player.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.Main.Game {
+    // Реализация фабрики лута и пуль
     public class GameItemsFactory : IGameInventoryItemsFactory {
         IGameController _c;
         const float RADIUS = 2.5f;
@@ -62,7 +63,7 @@ namespace Assets.Scripts.Main.Game {
             }
 
             var bullet = BulletGO.GetComponent<Bullet>();
-            bullet.Construct(_c.RD.DamageSystem, sender, itemInfo, amount);
+            bullet.Construct(/*_c.RD.DamageSystem, */sender, itemInfo, amount);
         }
     }
 }

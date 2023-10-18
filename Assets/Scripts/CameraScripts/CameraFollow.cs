@@ -2,6 +2,7 @@
 using UnityEngine;
 
 namespace Assets.Scripts.CameraScripts {
+    // Движение камеры за игроком
     public class CameraFollow : MonoBehaviour {
         public Transform target; // Цель, за которой следует камера (ваш персонаж)
         public float smoothSpeed = 0.125f; // Скорость плавного следования камеры

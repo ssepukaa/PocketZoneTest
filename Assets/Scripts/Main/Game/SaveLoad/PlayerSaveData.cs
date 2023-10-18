@@ -1,6 +1,8 @@
 ﻿using System;
 
 namespace Assets.Scripts.Main.Game.SaveLoad {
+    // Класс для сохранения/загрузки: слоты
+
     [Serializable]
     public class PlayerSaveData {
         public bool IsCompleteGame1;

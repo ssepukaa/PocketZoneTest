@@ -13,6 +13,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Main.Game {
+    // Игра
     public enum SceneNames { Boot, Menu, Game1, Game2, }
 
     public class GameController : MonoBehaviour, IGameController {
@@ -39,7 +40,7 @@ namespace Assets.Scripts.Main.Game {
             RD.UIController = uiController;
             RD.GameMode = new GameMode(this);
             RD.GameState = new GameState(this);
-            RD.DamageSystem = new DamageSystem(this);
+            //RD.DamageSystem = new DamageSystem(this);
 
             RD.Bootstrapper.InitGameComplete();
 

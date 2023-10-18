@@ -8,6 +8,7 @@ using Pathfinding;
 using UnityEngine;
 
 namespace Assets.Scripts.Enemy.DataRes {
+    // Ресурсы для создания противников
     [CreateAssetMenu(fileName = "EnemyResourceData", menuName = "PocketZoneTest/EnemyResourceData")]
 
     public class EnemyResourceData : ScriptableObject {

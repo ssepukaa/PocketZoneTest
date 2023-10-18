@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.InventoryUI {
+    // Отображение слотов в Инвентаре
     public class UIInventorySlot : MonoBehaviour {
         public int SlotIndex;
 

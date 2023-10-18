@@ -2,6 +2,7 @@
 using System;
 
 namespace Assets.Scripts.InventoryObject {
+    // Реализация свойства предмета инвентаря
     [Serializable]
     public class InventoryItemState : IInventoryItemState {
         public int Amount { get => _amount; set => _amount = value; }

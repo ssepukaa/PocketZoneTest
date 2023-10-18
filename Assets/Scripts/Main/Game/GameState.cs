@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Main.Game.Abstract;
 
 namespace Assets.Scripts.Main.Game {
+    // Состояния игры, но в целом пока не используется
     public enum GameStateTypes { Loading, Menu, Game, Pause, }
 
     public class GameState: IGameState {

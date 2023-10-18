@@ -9,6 +9,7 @@ using Assets.Scripts.Weapon;
 using UnityEngine;
 
 namespace Assets.Scripts.Player.Abstract {
+    // Игрок
     public interface IPlayerController {
         event Action<int, int> OnMissionChangedEvent;
         IGameController GameController { get; }

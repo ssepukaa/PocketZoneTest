@@ -7,6 +7,7 @@ using Assets.Scripts.Player.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.Weapon {
+    // Реализация оружия
     public class WeaponController : MonoBehaviour, IWeaponController {
         public event Action<int, int> OnFiredChangedEnvent;
 
@@ -30,10 +31,12 @@ namespace Assets.Scripts.Weapon {
         private void Start() {
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _muzzle = GetComponentInChildren<Muzzle>();
+            
         }
 
         public void Construct(IPlayerController playerController) {
             _c = playerController;
+            _muzzle.Construct(this);
             _c.Inventory.OnAmmoChangedEvent += UpdateWeapon;
             UpdateWeapon();
             //_isInit = true;
@@ -132,7 +135,7 @@ namespace Assets.Scripts.Weapon {
 
             Debug.Log("Fire Continue!");
             _c.GameController.CreateBullet(_c, GetMuzzleTransform(), Inventory.WeaponSlot.Item.Info, 1);
-
+            _muzzle.OnFired();
             StartCoroutine(AttackCooldown());
             UpdateWeapon();
             yield break;

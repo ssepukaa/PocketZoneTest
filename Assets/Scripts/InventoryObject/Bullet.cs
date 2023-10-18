@@ -3,6 +3,7 @@ using Assets.Scripts.Main.Game.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject {
+    // Реализация пули
     public class Bullet : MonoBehaviour, IBullet {
         public float speed = 10f; // Скорость пули
         IInventoryItem _item;
@@ -13,7 +14,7 @@ namespace Assets.Scripts.InventoryObject {
 
         }
 
-        public bool Construct(IDamageSystem listener, object sender, IInventoryItemInfo info, int amount) {
+        public bool Construct(/*IDamageSystem listener,*/ object sender, IInventoryItemInfo info, int amount) {
 
             _item = new InventoryItem(info);
             _renderer.sprite = info.AmmoInfo.BulletSprite;

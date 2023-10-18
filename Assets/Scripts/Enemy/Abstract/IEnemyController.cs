@@ -5,6 +5,7 @@ using Pathfinding;
 using UnityEngine;
 
 namespace Assets.Scripts.Enemy.Abstract {
+    // Котроллер противника
     public interface IEnemyController {
         IPlayerController TargetEnemy { get; set; }
         IInventorySlot WeaponSlot { get;}

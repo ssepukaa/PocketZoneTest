@@ -2,6 +2,7 @@
 using UnityEngine;
 
 namespace Assets.Scripts.Enemy {
+    // Система атаки противника
     public class EnemyBattleSystem : MonoBehaviour {
 
         IEnemyController _controller;

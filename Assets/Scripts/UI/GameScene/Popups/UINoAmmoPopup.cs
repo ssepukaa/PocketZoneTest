@@ -3,6 +3,7 @@ using Assets.Scripts.UI.Base;
 using UnityEngine;
 
 namespace Assets.Scripts.UI.GameScene.Popups {
+    // Реализация высплывающего сообщения Нет патронов
     public class UINoAmmoPopup: UIBasePopups {
         CanvasGroup _canvasGroup; // Ссылка на ваш CanvasGroup
 

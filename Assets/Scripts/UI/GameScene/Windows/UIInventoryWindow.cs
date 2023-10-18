@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.GameScene.Windows {
+    // Реализация окна Инвентаря
     public class UIInventoryWindow : UIBaseWindows {
 
         public TMP_Text DescriptionItemText;

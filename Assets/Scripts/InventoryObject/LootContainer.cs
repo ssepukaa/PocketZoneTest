@@ -2,6 +2,8 @@
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject {
+    // Реализация контейнера лута для хранения на сцене
+
     public class LootContainer : MonoBehaviour, ILootContainer {
         IInventoryItem _item;
         SpriteRenderer _renderer;

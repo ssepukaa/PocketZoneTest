@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.InventoryUI {
+    // Отображение предметов в Инвентаре
     public class UIInventoryItem : MonoBehaviour {
         [SerializeField] Image _imageIcon;
         [SerializeField] TMP_Text _textAmount;

@@ -3,6 +3,8 @@ using Assets.Scripts.InventoryObject.Data;
 using System;
 
 namespace Assets.Scripts.InventoryObject {
+    // Реализация слота инвентаря
+
     [Serializable]
     public class InventorySlot : IInventorySlot {
         public InventoryItemType ItemType => _isEmpty ? InventoryItemType.Empty : _item.ItemType;

@@ -6,6 +6,7 @@ using Assets.Scripts.UI;
 using UnityEngine;
 
 namespace Assets.Scripts.Main.Game {
+    // Реализация правил игры на уровне
     public class GameMode : IGameMode {
         IGameController _c;
         int _collectedCoins = 0;

@@ -5,6 +5,7 @@ using Pathfinding;
 using UnityEngine;
 
 namespace Assets.Scripts.Main.Game {
+    // Спавнер врагов
     public class EnemySpawner {
         IGameController _game;
 

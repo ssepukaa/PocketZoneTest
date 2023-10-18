@@ -8,6 +8,7 @@ using Assets.Scripts.UI.GameScene.Windows;
 using UnityEngine;
 
 namespace Assets.Scripts.UI.InventoryUI {
+    // Управление окном и данными инвентаря для интерфейса
     public class UIInventory : MonoBehaviour {
         public GameObject slotPrefab; // Drag and drop your SlotPrefab here in the inspector
         public RectTransform slotsContainer; // Parent object for all slots

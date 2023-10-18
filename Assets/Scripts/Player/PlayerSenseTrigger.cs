@@ -4,7 +4,7 @@ using Assets.Scripts.Player.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.Player {
-
+    // Реализация обнаружения противника триггером 
 
     public class PlayerSenseTrigger : MonoBehaviour {
 

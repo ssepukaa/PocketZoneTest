@@ -3,6 +3,7 @@ using Assets.Scripts.Player.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.Player {
+    // Реализация триггера обнаружения лута
     class PlayerLootTrigger : MonoBehaviour, IPlayerLootTrigger {
         IPlayerController _c;
 

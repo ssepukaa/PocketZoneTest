@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Components {
+    // Полоса здоровья над акторами
     public class UIHealthBar : MonoBehaviour
     {
         public Image fillImage;

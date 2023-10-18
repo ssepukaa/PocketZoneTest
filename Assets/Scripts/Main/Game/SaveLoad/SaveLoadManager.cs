@@ -6,6 +6,7 @@ using Assets.Scripts.Player.Data;
 using UnityEngine;
 
 namespace Assets.Scripts.Main.Game.SaveLoad {
+    // Класс для сохранения/загрузки: методы 
     public class SaveLoadManager {
 
         private static string savePath = Application.persistentDataPath + "/playerSaveData.json";

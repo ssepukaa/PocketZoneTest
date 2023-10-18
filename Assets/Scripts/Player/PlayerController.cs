@@ -13,7 +13,8 @@ using Assets.Scripts.Weapon;
 using UnityEngine;
 
 namespace Assets.Scripts.Player {
-    public class PlayerController : MonoBehaviour, IPlayerController, IShooter, IController {
+    // Реализация игрока
+    public class PlayerController : MonoBehaviour, IPlayerController, IShooter {
         public event Action<int, int> OnMissionChangedEvent;
 
         public IEnemyController TargetEnemy { get; set; }

@@ -10,7 +10,8 @@ using Pathfinding;
 using UnityEngine;
 
 namespace Assets.Scripts.Enemy {
-    public class EnemyController : MonoBehaviour, IEnemyController, IController, IDamageable {
+    // Контроллер противника
+    public class EnemyController : MonoBehaviour, IEnemyController, IDamageable {
         public EnemyResourceData RD;
         public EnemyHealthSystem HealthSystem { get; private set; }
         private EnemySenseTrigger _senseTrigger;

@@ -2,6 +2,7 @@
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject.Data {
+    // Описание предмета типа Боеприпасы. Созданы в папке Data
     [CreateAssetMenu(fileName = "AmmoItemInfo", menuName = "PocketZoneTest/Info/Create New Ammo Info")]
     [Serializable]
     public class AmmoItemInfo : ScriptableObject {

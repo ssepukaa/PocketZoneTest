@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.MenuScene.Windows {
+    // Реализация окна Главного меню
     public class StartMenuWindow : UIBaseWindows {
         public Button Button1;
         public Button Button2;

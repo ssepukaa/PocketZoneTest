@@ -2,6 +2,7 @@ using Assets.Scripts.UI.Base;
 using UnityEngine;
 
 namespace Assets.Scripts.UI.GameScene.Popups {
+    // Реализация всплывающего окна о Выполнении задания
     public class UITaskCompletePopup : UIBasePopups {
         private void Awake() {
             idUIPopupType = UIPopupType.TaskComplete;

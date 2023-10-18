@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Main.Boot {
+    // Реализация главного загрузчика, который создает Игру и UI
     public class Bootstrapper : MonoBehaviour, IBootstrapper {
         public BootstrapperResData Data;
         bool _isInitGameDone;

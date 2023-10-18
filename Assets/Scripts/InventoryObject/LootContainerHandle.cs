@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject {
     public class LootContainerHandle : MonoBehaviour, ILootContainer {
+        // Ручной контейнер лута для тестирования
+
         public InventoryItemInfo ItemInfo;
         public int Amount;
         SpriteRenderer _renderer;

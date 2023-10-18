@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject.Data {
+    // Общая база данных о предметах , в данный момент применяется при сохранении и загрузке для восстановления информации о предмете по типу
     
     [CreateAssetMenu(fileName = "ItemsInfoDataBase", menuName = "PocketZoneTest/Items/Create Data Base Info")]
     [Serializable]
     public class ItemsInfoDataBase : ScriptableObject {
+
+
         // public List<InventoryItemInfo> itemTypeToInfo = new List<InventoryItemInfo>();
         public InventoryItemInfo AmmoInfo;
         public InventoryItemInfo ClawsInfo;

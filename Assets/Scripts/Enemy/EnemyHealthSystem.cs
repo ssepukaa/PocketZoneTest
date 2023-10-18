@@ -4,6 +4,7 @@ using System;
 using Assets.Scripts.Components;
 
 namespace Assets.Scripts.Enemy {
+    // Система здоровья противника
     public class EnemyHealthSystem: IHealth {
         IEnemyController _controller;
         public event Action<float, float> OnHealthChangeEvent;

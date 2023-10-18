@@ -3,6 +3,7 @@ using Assets.Scripts.UI.Base;
 using UnityEngine;
 
 namespace Assets.Scripts.UI.GameScene.Popups {
+    // Реализация всплывающего окна о Перезарядке
     public class UIReloadingPopup: UIBasePopups {
         CanvasGroup _canvasGroup; // Ссылка на ваш CanvasGroup
         float delay = 2f; // Задержка перед исчезновением

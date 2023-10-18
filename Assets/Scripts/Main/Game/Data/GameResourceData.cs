@@ -9,10 +9,11 @@ using Assets.Scripts.UI;
 using UnityEngine;
 
 namespace Assets.Scripts.Main.Game.Data {
+    // Хранение ссылок и ресурсов игры - реализация
     [CreateAssetMenu(fileName = "GameResourceData", menuName = "PocketZoneTest/GameResourceData")]
     public class GameResourceData : ScriptableObject, IGameResourceData {
         public List<IEnemyController> Enemies { get => _enemies; set => _enemies = value; }
-        public IDamageSystem DamageSystem { get; set; }
+       // public IDamageSystem DamageSystem { get; set; }
         public IGameMode GameMode { get => _gameMode; set => _gameMode = value; }
         public IBootstrapper Bootstrapper { get => _bootstrapper; set => _bootstrapper = value; }
         public IUIController UIController { get => _uiController; set => _uiController = value; }

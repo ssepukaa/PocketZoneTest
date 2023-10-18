@@ -7,6 +7,8 @@ namespace Assets.Scripts.Main.Boot.Data {
     [CreateAssetMenu(fileName = "BootstrapperResourceData", menuName = "PocketZoneTest/BootstrapperResourceData")]
 
     public class BootstrapperResData: ScriptableObject {
+
+        // Хранение ссылок для главного загрузчика
        
         [SerializeField] IGameController _gameController;
         [SerializeField] IUIController _uiController;

@@ -2,6 +2,7 @@
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject.Abstract {
+    // Информация о предмете из ScriptableObject
     public interface IInventoryItemInfo {
         InventoryItemType ItemType { get; }
         ItemFunctionalityType FunctionalityType { get; }

@@ -5,6 +5,7 @@ using Assets.Scripts.UI;
 using UnityEngine;
 
 namespace Assets.Scripts.Main.Game.Abstract {
+    // Контроллер игры
     public interface IGameController {
         IGameResourceData RD { get; }
         Transform ControllerTransform { get; }

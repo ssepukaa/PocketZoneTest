@@ -2,6 +2,7 @@
 using Assets.Scripts.InventoryObject.Data;
 
 namespace Assets.Scripts.InventoryObject.Abstract {
+    // Инвентарь
     public interface IInventory {
         event Action<object, IInventoryItem, int> OnInventoryItemAddedEvent;
         event Action<object, InventoryItemType, int> OnInventoryItemRemovedEvent;

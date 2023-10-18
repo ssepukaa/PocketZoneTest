@@ -2,6 +2,7 @@
 using UnityEngine;
 
 namespace Assets.Scripts.UI.GameScene.Popups {
+    // Реализация всплывающего окна о Смерти игрока
     public class UIPlayerDeadPopup : UIBasePopups {
         private void Awake() {
             idUIPopupType = UIPopupType.PlayerDead;

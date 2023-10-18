@@ -2,7 +2,7 @@
 using Assets.Scripts.InventoryObject.Abstract;
 
 namespace Assets.Scripts.Player.Data {
-    
+    // Хранение данных инвентаря в отдельном классе для игры и игрока
     public class PlayerModelData {
         public bool IsCompleteGame1;
         public bool IsCompleteGame2;

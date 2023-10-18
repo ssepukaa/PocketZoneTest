@@ -7,6 +7,7 @@ using Assets.Scripts.UI.Base;
 using Assets.Scripts.Weapon;
 
 namespace Assets.Scripts.UI {
+    // Итерфейс UI
     public interface IUIController {
         void Construct(IBootstrapper bootstrapper, IGameController gameController);
         void LoadSceneComplete(GameStateTypes gameState);

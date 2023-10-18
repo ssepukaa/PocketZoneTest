@@ -3,6 +3,7 @@ using Assets.Scripts.Player.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.Enemy {
+    // Система обнаружения игрока противником с помощью круга триггера
     public class EnemySenseTrigger : MonoBehaviour {
         public Transform WeaponTransform;
         public Transform PlayerBodyTransform;

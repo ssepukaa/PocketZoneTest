@@ -5,6 +5,7 @@ using System;
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject.Data {
+    // Основное описание предмета, для каждого предмета свой файл-дата 
     [Serializable]
     [JsonConverter(typeof(StringEnumConverter))]
     public enum InventoryItemType { Empty, Ammo, Rifle, Pistol, Claws, Coin,}

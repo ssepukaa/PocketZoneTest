@@ -10,6 +10,7 @@ using Assets.Scripts.Main.Game.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.UI {
+    // Реализация интерфейса, контроллер всех окон
     public enum UIWindowsType {
         StartMenu, Inventory, HUD,
     }

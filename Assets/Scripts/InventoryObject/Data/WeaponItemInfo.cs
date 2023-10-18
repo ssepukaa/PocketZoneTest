@@ -2,6 +2,7 @@
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject.Data {
+    // Информация о предметах типа Оружие
     [CreateAssetMenu(fileName = "WeaponItemInfo", menuName = "PocketZoneTest/Info/Create New Weapon Info")]
     [Serializable]
     public class WeaponItemInfo : ScriptableObject {

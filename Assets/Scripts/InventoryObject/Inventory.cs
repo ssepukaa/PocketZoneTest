@@ -7,6 +7,8 @@ using Assets.Scripts.Player.Data;
 using UnityEngine;
 
 namespace Assets.Scripts.InventoryObject {
+    // Реализация инвентаря. Сам инвентарь (слоты) хранятся в отдельном классе, для сериализации
+
     [Serializable]
     public class Inventory : IInventory {
         public event Action<object, IInventoryItem, int> OnInventoryItemAddedEvent;

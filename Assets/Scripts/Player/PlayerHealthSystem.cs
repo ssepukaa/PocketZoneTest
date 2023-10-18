@@ -4,6 +4,7 @@ using Assets.Scripts.Player.Abstract;
 
 namespace Assets.Scripts.Player {
     public class PlayerHealthSystem: IHealth {
+        // Здоровье игрока
         public event Action <float, float> OnHealthChangeEvent;
         IPlayerController _controller;
 

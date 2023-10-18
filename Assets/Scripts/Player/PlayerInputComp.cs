@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Assets.Scripts.Player {
+    // Система управления игроком
     public class PlayerInputComp : MonoBehaviour {
         [SerializeField] float _speed;
         Vector2 _movement;

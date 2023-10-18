@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.InventoryObject.Data;
 
 namespace Assets.Scripts.InventoryObject.Abstract {
+    // Слот
     public interface IInventorySlot {
         IInventoryItem Item { get; set; }
 
